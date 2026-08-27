@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Опрос EnjoySurvey & Survstat Mock</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f4f6f8; margin: 0; padding: 40px 20px; display: flex; justify-content: center; }
+        .survey-container { background: #ffffff; max-width: 860px; width: 100%; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); padding: 35px 40px; box-sizing: border-box; }
+        .question-text { font-size: 19px; font-weight: 600; color: #222; margin-bottom: 15px; line-height: 1.4; }
+        .sub-text { font-size: 14px; color: #666; margin-bottom: 20px; line-height: 1.5; }
+        .banner-highlight { color: #28a745; font-weight: bold; }
+
+        .answer-item, label.option-label, .LogoItem { display: block; background: #f8f9fa; border: 1px solid #d0d7de; border-radius: 6px; padding: 12px 18px; margin-bottom: 10px; cursor: pointer; transition: all 0.2s; font-size: 15px; }
+        .answer-item:hover, label.option-label:hover, .LogoItem:hover { background: #eef2f6; border-color: #0d6efd; }
+        .answer-item.selected, label.option-label.selected, .LogoItem.selected { background: #0d6efd; color: #ffffff; border-color: #0d6efd; }
+
+        .styled_BlockStyled { background: #fff; border: 1px solid #e0e6ed; border-radius: 8px; padding: 20px; margin-bottom: 15px; box-shadow: 0 2px 6px rgba(0,0,0,0.04); }
+        .scale-main-answers-container { display: flex; gap: 10px; margin-top: 10px; }
+        .scale-item { flex: 1; border: 1px solid #d0d7de; border-radius: 6px; padding: 14px 8px; text-align: center; cursor: pointer; background: #fff; font-size: 14px; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
+        .scale-item:hover { background: #eef2f6; border-color: #0d6efd; }
+        .scale-item.selected { background: #0d6efd; color: #fff; border-color: #0d6efd; }
+
+        .form-row { display: flex; gap: 15px; margin-bottom: 20px; position: relative; }
+        .date-control { flex: 1; border: 1px solid #d0d7de; border-radius: 6px; padding: 12px 14px; background: #fff; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 15px; color: #333; }
+        .date-control svg { width: 14px; height: 14px; fill: #666; }
+
+        .grid-popup { position: absolute; top: 52px; left: 0; width: 100%; background: #fff; border: 1px solid #d0d7de; border-radius: 6px; box-shadow: 0 6px 16px rgba(0,0,0,0.12); z-index: 100; display: none; padding: 8px; box-sizing: border-box; }
+        .grid-3x4 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+        .grid-option { padding: 10px 6px; text-align: center; font-size: 14px; border-radius: 4px; cursor: pointer; background: #f8f9fa; border: 1px solid #e5e7eb; }
+        .grid-option:hover { background: #0d6efd; color: #fff; border-color: #0d6efd; }
+
+        .custom-input, textarea.custom-input { width: 100%; padding: 12px 14px; border: 1px solid #d0d7de; border-radius: 6px; font-size: 15px; background: #fff; outline: none; box-sizing: border-box; }
+        .dropdown-list { border: 1px solid #d0d7de; border-radius: 6px; max-height: 150px; overflow-y: auto; background: #fff; margin-top: 5px; }
+        .dropdown-option { padding: 10px 14px; cursor: pointer; }
+        .dropdown-option:hover { background: #0d6efd; color: #fff; }
+
+        .btn { color: #fff; border: none; border-radius: 6px; padding: 12px 30px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 20px; display: inline-block; text-align: center; text-decoration: none; }
+        .btn-green { background: #198754; }
+        .btn-green:hover { background: #157347; }
+        .btn-blue { background: #0d6efd; }
+        .btn-blue:hover { background: #0b5ed7; }
+
+        .error-msg { color: #dc3545; font-size: 14px; margin-top: 10px; display: none; font-weight: 500; }
+        .step { display: none; }
+        .step.active { display: block; }
+        .reward-card { border: 2px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 15px; cursor: pointer; }
+        .reward-card.selected { border-color: #198754; background: #e8f5e9; }
+    </style>
+</head>
+<body>
+
+<div class="survey-container">
+    <!-- ШАГ 0: Стартовый экран Survstat -->
+    <div id="step-0" class="step active">
+        <div class="question-text" style="font-size: 22px;">Время опросов 🥳</div>
+        <div class="sub-text">Предлагаем вам заполнить анкету, на это нужно <span class="banner-highlight">10 минут</span>. За успешно пройденный опрос начислим <span class="banner-highlight">50 баллов</span>.</div>
+
+        <div class="question-text" style="font-size: 17px; margin-top: 20px;">Пол</div>
+        <div class="form-row">
+            <label class="answer-item" style="flex:1; text-align:center;"><input type="radio" name="gender" value="Мужской" style="display:none;" onchange="selectSurvstatRadio(this)">Мужской</label>
+            <label class="answer-item" style="flex:1; text-align:center;"><input type="radio" name="gender" value="Женский" style="display:none;" onchange="selectSurvstatRadio(this)">Женский</label>
+        </div>
+
+        <div class="question-text" style="font-size: 17px; margin-top: 20px;">Дата рождения</div>
+        <div class="form-row">
+            <div style="flex: 1; position: relative;">
+                <div class="date-control" onclick="togglePopup('popup-day')"><span id="label-day">День</span><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg></div>
+                <div id="popup-day" class="grid-popup"><div class="grid-3x4"><div class="grid-option" onclick="pickDate('day', '15', '15')">15</div><div class="grid-option" onclick="pickDate('day', '20', '20')">20</div><div class="grid-option" onclick="pickDate('day', '27', '27')">27</div></div></div>
+            </div>
+            <div style="flex: 1; position: relative;">
+                <div class="date-control" onclick="togglePopup('popup-month')"><span id="label-month">Месяц</span><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg></div>
+                <div id="popup-month" class="grid-popup"><div class="grid-3x4"><div class="grid-option" onclick="pickDate('month', 'Май', '5')">Май</div><div class="grid-option" onclick="pickDate('month', 'Июнь', '6')">Июнь</div><div class="grid-option" onclick="pickDate('month', 'Июль', '7')">Июль</div></div></div>
+            </div>
+            <div style="flex: 1; position: relative;">
+                <div class="date-control" onclick="togglePopup('popup-year')"><span id="label-year">Год</span><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg></div>
+                <div id="popup-year" class="grid-popup"><div class="grid-3x4"><div class="grid-option" onclick="pickDate('year', '2004', '2004')">2004</div><div class="grid-option" onclick="pickDate('year', '2005', '2005')">2005</div></div></div>
+            </div>
+        </div>
+
+        <div style="margin-top: 15px;"><label style="font-size: 14px; color: #555; cursor: pointer; display: flex; align-items: center; gap: 8px;"><input type="checkbox" id="consent-cb" checked>Я принимаю условия Пользовательского соглашения</label></div>
+        <div id="error-0" class="error-msg">Заполните все поля анкеты</div>
+        <div class="btn btn-green" onclick="nextStep(0)">Начать опрос</div>
+    </div>
+
+    <!-- ШАГ 1: Информационный слайд 1 -->
+    <div id="step-1" class="step">
+        <div class="question-text" style="font-size: 20px;">Здравствуйте!</div>
+        <div class="sub-text" style="font-size: 16px; color: #222; margin-top: 15px; line-height: 1.6;">
+            На следующем экране вы увидите рекламное сообщение от банка.<br>
+            Изучите его, пожалуйста, а затем ответьте на несколько вопросов о нём.
+        </div>
+        <div class="btn btn-blue" onclick="nextStep(1)">Далее</div>
+    </div>
+
+    <!-- ШАГ 2: Информационный слайд 2 (Реклама банка) -->
+    <div id="step-2" class="step">
+        <div style="color: #0056b3; font-size: 20px; font-weight: bold; margin-bottom: 12px;">50% КЕШБЭК ПО КАРТЕ</div>
+        <div style="font-size: 16px; color: #0056b3; line-height: 1.5; margin-bottom: 25px;">
+            Установи приложение банка и оформи карту – получи 50% кешбэк за покупки до конца сентября (но не более 1 000 ₽)
+        </div>
+        <div class="question-text" style="font-size: 16px;">Пожалуйста, внимательно прочитайте предложение от банка.</div>
+        <div class="btn btn-blue" onclick="nextStep(2)">Далее</div>
+    </div>
+
+    <!-- ШАГ 3: Вопрос по рекламе (Выбор варианта) -->
+    <div id="step-3" class="step">
+        <div class="question-text">Какой размер кешбэка был обещан в рекламном предложении банка?</div>
+        <div class="answer-item" onclick="selectSingle(this, 3)">10%</div>
+        <div class="answer-item" onclick="selectSingle(this, 3)">30%</div>
+        <div class="answer-item" onclick="selectSingle(this, 3)">50%</div>
+        <div class="answer-item" onclick="selectSingle(this, 3)">100%</div>
+        <div id="error-3" class="error-msg">Пожалуйста, выберите вариант ответа</div>
+        <div class="btn btn-blue" onclick="nextStep(3)">Вперед</div>
+    </div>
+
+    <!-- ШАГ 4: Вопрос по рекламе (Открытый ввод) -->
+    <div id="step-4" class="step">
+        <div class="question-text">Какова максимальная сумма кешбэка в рублях, указанная в предложении банка?</div>
+        <input type="text" class="custom-input" placeholder="Введите сумму..." oninput="document.getElementById('error-4').style.display='none'">
+        <div id="error-4" class="error-msg">Пожалуйста, введите ответ</div>
+        <div class="btn btn-blue" onclick="nextStep(4)">Далее</div>
+    </div>
+
+    <!-- ШАГ 5: Матричная шкала оценки (1 до 5) -->
+    <div id="step-5" class="step">
+        <div class="question-text">Как вам это предложение? Оцените по 5-балльной шкале:</div>
+
+        <div class="styled_BlockStyled">
+            <div style="font-size: 15px; color: #333; margin-bottom: 10px;">Понятно, что нужно сделать, чтобы получить выгоду</div>
+            <div class="scale-main-answers-container">
+                <div class="scale-item" onclick="selectSingle(this, 5)">1</div>
+                <div class="scale-item" onclick="selectSingle(this, 5)">2</div>
+                <div class="scale-item" onclick="selectSingle(this, 5)">3</div>
+                <div class="scale-item" onclick="selectSingle(this, 5)">4</div>
+                <div class="scale-item" onclick="selectSingle(this, 5)">5</div>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 12px; color: #666; margin-top: 5px;">
+                <span>Совсем не согласен</span>
+                <span>Полностью согласен</span>
+            </div>
+        </div>
+
+        <div id="error-5" class="error-msg">Пожалуйста, оцените предложение</div>
+        <div class="btn btn-blue" onclick="nextStep(5)">Далее</div>
+    </div>
+
+    <!-- ШАГ 6 -->
+    <div id="step-6" class="step">
+        <div class="question-text">Принимали ли Вы участие в каких-либо социологических опросах за последние 30 дней?</div>
+        <div class="answer-item" onclick="selectSingle(this, 6)">Да, принимал участие</div>
+        <div class="answer-item" onclick="selectSingle(this, 6)">Нет, не принимал</div>
+        <div id="error-6" class="error-msg">Пожалуйста, выберите вариант ответа</div>
+        <div class="btn btn-blue" onclick="nextStep(6)">Вперед</div>
+    </div>
+
+    <!-- ШАГ 7 -->
+    <div id="step-7" class="step">
+        <div class="question-text">Работаете ли Вы или Ваши близкие в следующих сферах?</div>
+        <div class="answer-item" onclick="selectSingle(this, 7)">Маркетинг и реклама</div>
+        <div class="answer-item" onclick="selectSingle(this, 7)">Ни в одной из перечисленных</div>
+        <div id="error-7" class="error-msg">Пожалуйста, выберите вариант ответа</div>
+        <div class="btn btn-blue" onclick="nextStep(7)">Вперед</div>
+    </div>
+
+    <!-- ШАГ 8 -->
+    <div id="step-8" class="step">
+        <div class="question-text">В каком городе вы живете в настоящее время?</div>
+        <div class="ComboBox combobox-container" onclick="showCityList()">
+            <input type="text" id="city-input" class="custom-input" placeholder="Выберите из списка" oninput="filterCities(this.value)">
+        </div>
+        <div id="city-dropdown" class="dropdown-list" style="display:none;">
+            <div class="dropdown-option" onclick="chooseCity('Москва')">Москва</div>
+            <div class="dropdown-option" onclick="chooseCity('Екатеринбург')">Екатеринбург</div>
+        </div>
+        <div id="error-8" class="error-msg">Вам нужно выбрать город из списка</div>
+        <div class="btn btn-blue" onclick="nextStep(8)">Далее</div>
+    </div>
+
+    <!-- ШАГ 9 -->
+    <div id="step-9" class="step">
+        <div class="question-text">Сколько будет семь плюс шесть? Выберите правильный ответ, написанный словом.</div>
+        <div class="answer-item" onclick="selectSingle(this, 9)">13</div>
+        <div class="answer-item" onclick="selectSingle(this, 9)">Тринадцать</div>
+        <div id="error-9" class="error-msg">Пожалуйста, выберите вариант ответа</div>
+        <div class="btn btn-blue" onclick="nextStep(9)">Вперед</div>
+    </div>
+
+    <!-- ШАГ 10: Мультиселект брендов -->
+    <div id="step-10" class="step">
+        <div class="question-text">Какими онлайн-кинотеатрами Вы лично пользуетесь? Отметьте все подходящие.</div>
+        <div class="LogoItem answer-item" onclick="toggleMulti(this, 10)" data-name="Кинопоиск"><span class="answer-text">2</span></div>
+        <div class="LogoItem answer-item" onclick="toggleMulti(this, 10)" aria-label="Иви (ivi)"><span class="answer-text">6b</span></div>
+        <div class="LogoItem answer-item" onclick="toggleMulti(this, 10)" title="Okko"><span class="answer-text">8</span></div>
+        <div class="LogoItem answer-item" onclick="toggleMulti(this, 10)" data-title="Wink"><span class="answer-text">f3</span></div>
+        <div class="LogoItem answer-item" onclick="toggleMulti(this, 10)" data-name="Вымышленный Квантовый Кинотеатр"><span class="answer-text">9</span></div>
+        <div id="error-10" class="error-msg">Пожалуйста, не оставляйте вопрос без ответа</div>
+        <div class="btn btn-blue" onclick="nextStep(10)">Вперед</div>
+    </div>
+
+    <!-- ШАГ 11: ДИНАМИЧЕСКИЙ АККОРДЕОН ОЦЕНОК (3 подвопроса) -->
+    <div id="step-11" class="step">
+        <div class="question-text">Насколько вы удовлетворены следующими параметрами продуктов для приготовления ужина в офлайн-магазине Лента?</div>
+
+        <div class="styled_BlockStyled" id="matrix-b1">
+            <div style="font-weight: 600; color: #0056b3; margin-bottom: 8px;">Свежесть продуктов</div>
+            <div class="scale-main-answers-container">
+                <div class="scale-item" onclick="selectAccordionScale(this, 'matrix-b2', 11)">Точно не удовлетворены</div>
+                <div class="scale-item" onclick="selectAccordionScale(this, 'matrix-b2', 11)">Скорее не удовлетворены</div>
+                <div class="scale-item" onclick="selectAccordionScale(this, 'matrix-b2', 11)">Отчасти удовлетворены, отчасти нет</div>
+                <div class="scale-item" onclick="selectAccordionScale(this, 'matrix-b2', 11)">Скорее удовлетворены</div>
+                <div class="scale-item" onclick="selectAccordionScale(this, 'matrix-b2', 11)">Определенно удовлетворены</div>
+            </div>
+        </div>
+
+        <div class="styled_BlockStyled" id="matrix-b2" style="display: none;">
+            <div style="font-weight: 600; color: #0056b3; margin-bottom: 8px;">Качество продуктов</div>
+            <div class="scale-main-answers-container">
+                <div class="scale-item" onclick="selectAccordionScale(this, 'matrix-b3', 11)">Точно не удовлетворены</div>
+                <div class="scale-item" onclick="selectAccordionScale(this, 'matrix-b3', 11)">Скорее не удовлетворены</div>
+                <div class="scale-item" onclick="selectAccordionScale(this, 'matrix-b3', 11)">Отчасти удовлетворены, отчасти нет</div>
+                <div class="scale-item" onclick="selectAccordionScale(this, 'matrix-b3', 11)">Скорее удовлетворены</div>
+                <div class="scale-item" onclick="selectAccordionScale(this, 'matrix-b3', 11)">Определенно удовлетворены</div>
+            </div>
+        </div>
+
+        <div class="styled_BlockStyled" id="matrix-b3" style="display: none;">
+            <div style="font-weight: 600; color: #0056b3; margin-bottom: 8px;">Широта ассортимента</div>
+            <div class="scale-main-answers-container">
+                <div class="scale-item" onclick="selectAccordionScale(this, null, 11)">Точно не удовлетворены</div>
+                <div class="scale-item" onclick="selectAccordionScale(this, null, 11)">Скорее не удовлетворены</div>
+                <div class="scale-item" onclick="selectAccordionScale(this, null, 11)">Отчасти удовлетворены, отчасти нет</div>
+                <div class="scale-item" onclick="selectAccordionScale(this, null, 11)">Скорее удовлетворены</div>
+                <div class="scale-item" onclick="selectAccordionScale(this, null, 11)">Определенно удовлетворены</div>
+            </div>
+        </div>
+
+        <div id="error-11" class="error-msg">Пожалуйста, ответьте на все вопросы в этом блоке!</div>
+        <div class="btn btn-blue" onclick="nextStep(11)">Далее</div>
+    </div>
+
+    <!-- ШАГ 12: ДИНАМИЧЕСКИЕ ДЕМОГРАФИЧЕСКИЕ ВОПРОСЫ (3 подвопроса) -->
+    <div id="step-12" class="step">
+        <div class="styled_BlockStyled" id="demo-b1">
+            <div class="question-text" style="font-size: 17px;">Каково ваше семейное положение?</div>
+            <div class="answer-item" onclick="selectDemoBlock(this, 'demo-b2', 12)">Не замужем/не женат</div>
+            <div class="answer-item" onclick="selectDemoBlock(this, 'demo-b2', 12)">Замужем/женат</div>
+            <div class="answer-item" onclick="selectDemoBlock(this, 'demo-b2', 12)">Разведен(а)/ вдовец /вдова</div>
+        </div>
+
+        <div class="styled_BlockStyled" id="demo-b2" style="display: none;">
+            <div class="question-text" style="font-size: 17px;">С кем вы проживаете в настоящее время? Отметьте все подходящие варианты:</div>
+            <div class="answer-item" onclick="toggleDemoMulti(this, 'demo-b3', 12)">
+                <input type="checkbox" style="margin-right: 8px; pointer-events: none;">Один/одна
+            </div>
+            <div class="answer-item" onclick="toggleDemoMulti(this, 'demo-b3', 12)">
+                <input type="checkbox" style="margin-right: 8px; pointer-events: none;">С родителями/родственниками
+            </div>
+            <div class="answer-item" onclick="toggleDemoMulti(this, 'demo-b3', 12)">
+                <input type="checkbox" style="margin-right: 8px; pointer-events: none;">С партнёром/супругом(ой)
+            </div>
+            <div class="answer-item" onclick="toggleDemoMulti(this, 'demo-b3', 12)">
+                <input type="checkbox" style="margin-right: 8px; pointer-events: none;">С ребенком / детьми
+            </div>
+        </div>
+
+        <div class="styled_BlockStyled" id="demo-b3" style="display: none;">
+            <div class="question-text" style="font-size: 17px;">Укажите вашу основную специальность / профессию:</div>
+            <input type="text" class="custom-input" placeholder="Введите профессию..." oninput="document.getElementById('error-12').style.display='none'">
+        </div>
+
+        <div id="error-12" class="error-msg">Пожалуйста, ответьте на все вопросы в этом блоке!</div>
+        <div class="btn btn-blue" onclick="nextStep(12)">Далее</div>
+    </div>
+
+    <!-- ШАГ 13: Открытый вопрос -->
+    <div id="step-13" class="step">
+        <div class="question-text">Напишите кратко ваши впечатления о сервисе доставки и покупках:</div>
+        <textarea class="custom-input" rows="4" placeholder="Ваш отзыв..." oninput="document.getElementById('error-13').style.display='none'"></textarea>
+        <div id="error-13" class="error-msg">Пожалуйста, не оставляйте вопрос без ответа</div>
+        <div class="btn btn-blue" onclick="nextStep(13)">Далее</div>
+    </div>
+
+    <!-- ШАГ 14: Финал с выплатой -->
+    <div id="step-14" class="step">
+        <div class="question-text">Поздравляем! Опрос успешно завершен.</div>
+        <div class="sub-text">Выберите способ получения вознаграждения:</div>
+        <div class="reward-card" onclick="selectReward(this, 'money')"><strong>Деньги (рубли)</strong> — 50 руб. на ваш баланс</div>
+        <button class="btn btn-green" onclick="finishSurvey()">Получить</button>
+    </div>
+</div>
+
+<script>
+    let survstatDate = { day: '', month: '', year: '' };
+
+    function togglePopup(id) {
+        let el = document.getElementById(id);
+        document.querySelectorAll('.grid-popup').forEach(p => p.style.display = 'none');
+        el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+    }
+
+    function pickDate(type, text, val) {
+        document.getElementById(`label-${type}`).innerText = text;
+        survstatDate[type] = val;
+        document.getElementById(`popup-${type}`).style.display = 'none';
+        document.getElementById('error-0').style.display = 'none';
+    }
+
+    function selectSurvstatRadio(input) {
+        document.querySelectorAll('input[name="' + input.name + '"]').forEach(r => r.parentElement.classList.remove('selected'));
+        input.parentElement.classList.add('selected');
+        document.getElementById('error-0').style.display = 'none';
+    }
+
+    function selectSingle(el, step) {
+        el.parentElement.querySelectorAll('.answer-item, .scale-item').forEach(item => item.classList.remove('selected'));
+        el.classList.add('selected');
+        let err = document.getElementById(`error-${step}`);
+        if (err) err.style.display = 'none';
+    }
+
+    function toggleMulti(el, step) {
+        el.classList.toggle('selected');
+        let err = document.getElementById(`error-${step}`);
+        if (err) err.style.display = 'none';
+    }
+
+    function selectAccordionScale(el, nextId, step) {
+        el.parentElement.querySelectorAll('.scale-item').forEach(i => i.classList.remove('selected'));
+        el.classList.add('selected');
+        if (nextId) {
+            let nextEl = document.getElementById(nextId);
+            if (nextEl) nextEl.style.display = 'block';
+        }
+        let err = document.getElementById(`error-${step}`);
+        if (err) err.style.display = 'none';
+    }
+
+    function selectDemoBlock(el, nextId, step) {
+        el.parentElement.querySelectorAll('.answer-item').forEach(i => i.classList.remove('selected'));
+        el.classList.add('selected');
+        if (nextId) {
+            let nextEl = document.getElementById(nextId);
+            if (nextEl) nextEl.style.display = 'block';
+        }
+        let err = document.getElementById(`error-${step}`);
+        if (err) err.style.display = 'none';
+    }
+
+    function toggleDemoMulti(el, nextId, step) {
+        el.classList.toggle('selected');
+        let cb = el.querySelector('input[type="checkbox"]');
+        if (cb) cb.checked = el.classList.contains('selected');
+
+        if (nextId) {
+            let nextEl = document.getElementById(nextId);
+            if (nextEl) nextEl.style.display = 'block';
+        }
+        let err = document.getElementById(`error-${step}`);
+        if (err) err.style.display = 'none';
+    }
+
+    function showCityList() { document.getElementById('city-dropdown').style.display = 'block'; }
+    function filterCities(val) {
+        showCityList();
+        document.querySelectorAll('.dropdown-option').forEach(opt => opt.style.display = opt.innerText.toLowerCase().includes(val.toLowerCase()) ? 'block' : 'none');
+    }
+    function chooseCity(val) {
+        document.getElementById('city-input').value = val;
+        document.getElementById('city-dropdown').style.display = 'none';
+        document.getElementById('error-8').style.display = 'none';
+    }
+    function selectReward(el, type) {
+        document.querySelectorAll('.reward-card').forEach(c => c.classList.remove('selected'));
+        el.classList.add('selected');
+    }
+
+    function nextStep(current) {
+        if (current === 0) {
+            if (!document.querySelectorAll('#step-0 .selected').length || !survstatDate.day || !survstatDate.month || !survstatDate.year) {
+                document.getElementById('error-0').style.display = 'block'; return;
+            }
+        }
+        if (current === 3) {
+            if (!document.querySelector('#step-3 .selected')) {
+                document.getElementById('error-3').style.display = 'block'; return;
+            }
+        }
+        if (current === 4) {
+            if (document.querySelector('#step-4 input').value.trim() === '') {
+                document.getElementById('error-4').style.display = 'block'; return;
+            }
+        }
+        if (current === 5) {
+            if (!document.querySelector('#step-5 .selected')) {
+                document.getElementById('error-5').style.display = 'block'; return;
+            }
+        }
+        if ([6, 7, 9].includes(current)) {
+            if (!document.querySelector(`#step-${current} .selected`)) {
+                document.getElementById(`error-${current}`).style.display = 'block'; return;
+            }
+        }
+        if (current === 8) {
+            if (document.getElementById('city-input').value.trim() === '') {
+                document.getElementById('error-8').style.display = 'block'; return;
+            }
+        }
+        if (current === 10) {
+            if (!document.querySelectorAll('#step-10 .selected').length) {
+                document.getElementById('error-10').style.display = 'block'; return;
+            }
+        }
+        if (current === 11) {
+            let b1 = document.querySelector('#matrix-b1 .selected');
+            let b2 = document.querySelector('#matrix-b2 .selected');
+            let b3 = document.querySelector('#matrix-b3 .selected');
+            if (!b1 || !b2 || !b3) {
+                document.getElementById('error-11').style.display = 'block'; return;
+            }
+        }
+        if (current === 12) {
+            let d1 = document.querySelector('#demo-b1 .selected');
+            let d2 = document.querySelector('#demo-b2 .selected');
+            let d3 = document.querySelector('#demo-b3 input');
+            if (!d1 || !d2 || !d3 || d3.value.trim() === '') {
+                document.getElementById('error-12').style.display = 'block'; return;
+            }
+        }
+        if (current === 13) {
+            if (document.querySelector('#step-13 textarea').value.trim() === '') {
+                document.getElementById('error-13').style.display = 'block'; return;
+            }
+        }
+
+        showStep(`step-${current + 1}`);
+    }
+
+    function showStep(id) {
+        document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+        let target = document.getElementById(id);
+        if (target) target.classList.add('active');
+    }
+
+    function finishSurvey() {
+        showStep('step-14');
+    }
+</script>
+</body>
+</html>
