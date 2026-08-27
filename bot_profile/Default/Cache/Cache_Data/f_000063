@@ -1,0 +1,1343 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Исследование</title><link rel="icon" href="/FastunaProd_DiyPro2_6767_40498F-6ME/resource/production.ico" /><link rel="stylesheet" href="/FastunaProd_DiyPro2_6767_40498F-6ME/resource/loaderStyle.css"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=contain"><link rel="preload" href="/FastunaProd_DiyPro2_6767_40498F-6ME/resource/main.css" as="style" onload="this.onload=null;this.rel='stylesheet'"><noscript><link href="/FastunaProd_DiyPro2_6767_40498F-6ME/resource/main.css" rel="stylesheet"></noscript></head><body><noscript>You need to enable JavaScript to run this app.</noscript><div id="html-loader" class="html-loader"><div class="spinner"></div></div><div id="root" class="root"></div><script>var SURVEY__STATE__ = {};
+        window.__STATE__ = {
+  "initialInterviewData": {
+    "surveyId": 11026,
+    "interviewUID": "5ea54d83-0481-4dbc-810f-5a2656dce72e",
+    "surveyBinder": "FastunaProd_DiyPro2_6767_40498F-6ME",
+    "isDebugHost": false,
+    "isDebugInterview": false,
+    "isTest": false,
+    "isAuthenticated": false,
+    "queryParams": {
+      "i": "5ea54d83-0481-4dbc-810f-5a2656dce72e",
+      "respuid": "c42f2060-a343-4bee-b561-88790e4bdb4d",
+      "concept": "3f9a32ad-2828-48fb-8cbd-6e3488785df8",
+      "a": "21",
+      "s": "1",
+      "city": "238",
+      "strata2": "1",
+      "respLang": "RU",
+      "part_source": "router-finish",
+      "part_rrss": "router-finish",
+      "part_ai": "1",
+      "rs": "1"
+    },
+    "scriptHash": 271959978,
+    "appVersion": "1.1.2076"
+  },
+  "initialDefaults": {
+    "extendWith": "genMethod1",
+    "id": "_mainDefaultsId",
+    "popupCancelText": "Отмена",
+    "nextButton": "Далее",
+    "prevButton": "Назад",
+    "culture": "genMethod2",
+    "emptyError": "Пожалуйста, не оставляйте вопросы без ответа",
+    "emptySupportComment": "Пожалуйста, опишите проблему",
+    "maxAnswersError": "Укажите, пожалуйста, меньшее количество ответов",
+    "minAnswersError": "Укажите, пожалуйста, большее количество ответов",
+    "minLengthError": "Введённый Вами текст слишком короткий",
+    "maxLengthError": "Введённый Вами текст слишком длинный",
+    "intError": "Пожалуйста, введите целое число",
+    "numberError": "Пожалуйста, введите число",
+    "dateError": "Пожалуйста, укажите дату",
+    "textError": "Пожалуйста, введите текст",
+    "rangeError": "Выбранный вариант ответа должен иметь другое значение",
+    "supportText": "Нашли ошибку или что-то не работает?",
+    "agreementText": "Пользовательское соглашение",
+    "privacyText": "Политика конфиденциальности",
+    "supportHeader": "Сообщить о проблеме",
+    "supportCategoryPlaceholder": "Выберите из списка",
+    "supportCommentPlaceholder": "Добавить комментарий...",
+    "supportSendText": "Отправить",
+    "supportSuccessText": "Спасибо за обращение, в ближайшее время мы постараемся решить Вашу проблему.",
+    "supportFailText": "Сообщение не было отправлено",
+    "title": "Исследование",
+    "hintSlider": "Для ответа передвиньте ползунок",
+    "hintRadioButton": "Один ответ",
+    "hintCheckBox": "Отметьте все подходящие ответы",
+    "hintText": "Запишите ответ в поле ниже",
+    "hintInteger": "Введите число в поле ниже",
+    "hintNumber": "Введите число",
+    "hintMemo": "Мы будем благодарны вам за подробный ответ",
+    "hintTable": "Ответьте на каждый вопрос",
+    "hintDragItem": "Перетащите каждую карточку в нужную коробку",
+    "hintClickText": "",
+    "hintMinAnswers": "Укажите не менее @mincount @answerform",
+    "hintEqualsAnswers": "Укажите @eqcount @answerform",
+    "hintMaxAnswers": "Укажите не более @maxcount @answerform",
+    "hintMinMaxAnswers": "Укажите не менее @mincount и не более @maxcount @answerform",
+    "hintComboBoxSingle": "Один ответ",
+    "hintComboBoxMulti": "Отметьте все подходящие ответы",
+    "hintScale": "",
+    "hintContentOnlySingle": "Один ответ",
+    "hintContentOnlyMulti": "Отметьте все подходящие ответы",
+    "hintStars": "",
+    "hintShapeSingle": "",
+    "hintShapeMulti": "",
+    "hintClickPointSingle": "",
+    "hintClickPointMulti": "",
+    "hintAutoCompleteSingle": "Один ответ",
+    "hintAutoCompleteMulti": "Отметьте все подходящие ответы",
+    "mediaPlayerVideoError": "Пожалуйста, досмотрите видеоролик до конца",
+    "mediaPlayerAudioError": "Пожалуйста, дослушайте аудиозапись до конца",
+    "buttonTimeoutWaitText": "@Countdown сек",
+    "popupOkText": "Ок",
+    "clickPointRemoveText": "Удалить",
+    "icon": "",
+    "captionText": "",
+    "changeScreenOrientationText": "Пожалуйста, поверните Ваше устройство для более комфортного просмотра",
+    "maskError": "Неправильный формат данных",
+    "equalsAnswersError": "Укажите, пожалуйста, точное количество ответов",
+    "lengthError": "Введённый Вами текст слишком длинный",
+    "showNextButton": true,
+    "showPrevButton": false,
+    "prohibitSelection": true,
+    "showQuestionIds": false,
+    "showAnswerIds": false,
+    "maxAnswersDisable": true,
+    "showProgress": true,
+    "showSupport": true,
+    "showAgreement": true,
+    "showPrivacy": true,
+    "showSupportCategories": false,
+    "endTextDefault": true,
+    "inheritUnionHeader": false,
+    "autoCallNext": false,
+    "styleConstructor": "",
+    "organizationSelectName": "Название организации",
+    "organizationSelectAddress": "Юридический адрес",
+    "organizationSelectInn": "ИНН",
+    "organizationSelectChangeButton": "Изменить",
+    "organizationSelectPlaceHolder": "Название или ИНН",
+    "organizationSelectOkvedName": "Код ОКВЭД",
+    "organizationSelectRevenue": "Годовой оборот",
+    "organizationSelectEmployeeCount": "Количество сотрудников",
+    "hintOrganizationSelect": "Начните вводить название или ИНН",
+    "autocompleteNotFound": "Ничего не найдено",
+    "autocompleteSearching": "Поиск результатов...",
+    "windowBlockedText": "Не удалось открыть окно. Возможно, оно заблокировано браузером.",
+    "supportSuccessButtonText": "Ок",
+    "backToListButton": "К списку",
+    "prototypeBackToTaskButtonText": "Вернуться к заданию",
+    "prototypeTaskPreviewButtonText": "Посмотреть задание",
+    "prototypeSkipButtonText": "Пропустить задание",
+    "prototypeCompleteButtonText": "Завершить задание",
+    "prototypeRejectButtonText": "Не могу выполнить",
+    "prototypeConfirmButtonText": "Да, получилось",
+    "prototypeConfirmHeader": "Получилось выполнить задание?",
+    "prototypeConfirmHint": "После перехода к следующим вопросам, вы больше не сможете вернуться к прототипу",
+    "prototypeNotationText": "После ознакомления с прототипом нажмите на кнопку «Завершить задание», чтобы перейти к следующему вопросу."
+  },
+  "page": {
+    "page": {
+      "id": "A4",
+      "header": {
+        "text": {
+          "components": [
+            {
+              "type": "text",
+              "value": "\u003Cp\u003E"
+            },
+            {
+              "type": "text",
+              "value": "\u003Cp style=\u0022display: inherit;\u0022\u003E\u003Cspan style=\u0022color: rgb(0, 0, 0); background-color: transparent;\u0022\u003E\u003Cstrong style=\u0022font-weight: 700;\u0022\u003EКак вам это предложение? \u003C/strong\u003E\u003C/span\u003E\u003Cspan style=\u0022color: rgb(32, 32, 32); background-color: transparent;\u0022\u003E\u003Cstrong style=\u0022font-weight: 700;\u0022\u003EОцените по 5-бальной шкале:\u003C/strong\u003E\u003C/span\u003E"
+            },
+            {
+              "type": "text",
+              "value": "\u003C/p\u003E"
+            },
+            {
+              "type": "text",
+              "value": "\u003C/p\u003E"
+            }
+          ]
+        },
+        "isFixed": false
+      },
+      "style": "span[data-lang]:not([data-lang=\u0027RU\u0027]) { display: none; }\n\t\t\t\t.btn-spoiler-open,\n\t\t\t\t.btn-spoiler-close {\n\t\t\t\tdisplay: block;\n\t\t\t\ttext-align:center;\n\t\t\t\tpadding: 10px;\n\t\t\t\tcolor: #717171;\n\t\t\t\tbackground-color: #f4f4f4;\n\t\t\t\tborder: 1px solid #ececec;\n\t\t\t\tcursor: pointer;\n\t\t\t\t}\n\t\t\t\t.btn-spoiler-close,\n\t\t\t\t.btn-spoiler-content {\n\t\t\t\tdisplay: none;\n\t\t\t\t}\n\n\t\t\t\t.btn-spoiler-open:hover,\n\t\t\t\t.btn-spoiler-close:hover {\n\t\t\t\tbackground-color: #ececec;\n\t\t\t\t}\n\n\t\t\t\t.page-header .header\n\t\t\t\t{\n\t\t\t\tfont-family: \u0027Inter-Regular\u0027;\n\t\t\t\tfont-weight: normal;\n\t\t\t\t}\n\n\t\t\t\t.question-header\n\t\t\t\t{\n\t\t\t\tfont-family: \u0027Inter-Regular\u0027 !important;\n\t\t\t\tfont-weight: normal !important;\n\t\t\t\t}\n\n\t\t\t\tbody u, u *\n\t\t\t\t{\n\t\t\t\tcolor: inherit;\n\t\t\t\ttext-decoration: underline;\n\t\t\t\t}\n\t\t\t",
+      "script": "\n\n\t\t\t\tfunction showSpoiler() {\n\t\t\t\t\tdocument.getElementById(\u0027btn-spoiler-content\u0027).style.display = \u0027block\u0027;\n\t\t\t\t\tdocument.getElementById(\u0027btn-spoiler-open\u0027).style.display = \u0027none\u0027;\n\t\t\t\t\tdocument.getElementById(\u0027btn-spoiler-close\u0027).style.display = \u0027block\u0027;\n\t\t\t\t\tconst media = document.querySelector(\u0027video, audio\u0027);\n  \t\t\t\t\tif (media) media.play();\n\t\t\t\t}\n\n\t\t\t\tfunction hideSpoiler() {\n\t\t\t\t\tdocument.getElementById(\u0027btn-spoiler-content\u0027).style.display = \u0027none\u0027;\n\t\t\t\t\tdocument.getElementById(\u0027btn-spoiler-open\u0027).style.display = \u0027block\u0027;\n\t\t\t\t\tdocument.getElementById(\u0027btn-spoiler-close\u0027).style.display = \u0027none\u0027;\n\t\t\t\t}\n\n\t\t\t\tif (document.querySelector(\u0027.btn-spoiler-open\u0027) \u0026\u0026 document.querySelector(\u0027.btn-spoiler-close\u0027)) {\n\t\t\t\t\thideSpoiler();\n\t\t\t\t\tdocument.querySelector(\u0027.btn-spoiler-open\u0027).addEventListener(\u0027click\u0027, showSpoiler);\n\t\t\t\t\tdocument.querySelector(\u0027.btn-spoiler-close\u0027).addEventListener(\u0027click\u0027, hideSpoiler);\n\t\t\t\t}\n\t\t\t",
+      "buttonTimeout": 0,
+      "postbackTimeout": 0,
+      "progress": 21,
+      "isMobile": false,
+      "hasStep": true,
+      "end": false,
+      "isReversed": false,
+      "questionBlocks": [
+        {
+          "cols": 1,
+          "id": "_fake_block_A4_1",
+          "questionIds": [
+            "A4_1"
+          ]
+        },
+        {
+          "cols": 1,
+          "id": "_fake_block_A4_2",
+          "questionIds": [
+            "A4_2"
+          ]
+        },
+        {
+          "cols": 1,
+          "id": "_fake_block_A4_3",
+          "questionIds": [
+            "A4_3"
+          ]
+        },
+        {
+          "cols": 1,
+          "id": "_fake_block_A4_4",
+          "questionIds": [
+            "A4_4"
+          ]
+        },
+        {
+          "cols": 1,
+          "id": "_fake_block_A4_5",
+          "questionIds": [
+            "A4_5"
+          ]
+        }
+      ],
+      "serverTimeStart": "2026-08-25T19:24:45.7149554+03:00",
+      "isIE": false,
+      "isDebugHost": false,
+      "imagesOnPage": [],
+      "agreementUrl": "https://survey.survstat.ru/agreement",
+      "privacyUrl": "https://docs.survstat.ru/privacy",
+      "noColors": false,
+      "isAiChat": false,
+      "isolate": false
+    },
+    "questions": [
+      {
+        "maxAnswers": 0,
+        "minAnswers": 0,
+        "minVal": 0,
+        "maxVal": 0,
+        "precision": 1,
+        "opacitySelected": 0.5,
+        "opacityHover": 0.5,
+        "isMultiple": false,
+        "isVisible": true,
+        "isCallNext": false,
+        "isAutoScroll": true,
+        "isImperative": true,
+        "hasGradient": true,
+        "isGradientReversed": false,
+        "hasStep": false,
+        "isSubUnionQuestion": false,
+        "isImmutable": false,
+        "isReversed": false,
+        "callNext": false,
+        "dragItemAllowClick": false,
+        "rounds": false,
+        "center": false,
+        "isStretched": false,
+        "isReadOnly": false,
+        "fillSelected": false,
+        "isGradientHoverOnly": false,
+        "isOpenType": false,
+        "id": "A4_1",
+        "questionBlockId": "_fake_block_A4_1",
+        "type": "scale",
+        "orientation": "horizontal",
+        "chosenLabelAlign": "right",
+        "fillType": "gain",
+        "answerTextAlign": "center",
+        "scaleByHeight": false,
+        "header": {
+          "text": {
+            "components": [
+              {
+                "type": "text",
+                "value": "\u003Cp\u003E"
+              },
+              {
+                "type": "text",
+                "value": "Понятно, что нужно сделать, чтобы получить выгоду"
+              },
+              {
+                "type": "text",
+                "value": "\u003C/p\u003E"
+              }
+            ]
+          },
+          "isFixed": false
+        },
+        "hint": {
+          "text": {
+            "components": [
+              {
+                "type": "text",
+                "value": "Оцените по шкале от 1 до 5"
+              }
+            ]
+          },
+          "isFixed": false
+        },
+        "answers": [
+          {
+            "isChecked": false,
+            "isImmutable": false,
+            "isReadOnly": false,
+            "isolate": false,
+            "isReset": false,
+            "isCallNext": false,
+            "isImperative": false,
+            "id": "1",
+            "answerBlockId": "_fake_block_1",
+            "autoFocus": false,
+            "text": {
+              "components": [
+                {
+                  "type": "text",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          {
+            "isChecked": false,
+            "isImmutable": false,
+            "isReadOnly": false,
+            "isolate": false,
+            "isReset": false,
+            "isCallNext": false,
+            "isImperative": false,
+            "id": "2",
+            "answerBlockId": "_fake_block_1",
+            "autoFocus": false,
+            "text": {
+              "components": [
+                {
+                  "type": "text",
+                  "value": "2"
+                }
+              ]
+            }
+          },
+          {
+            "isChecked": false,
+            "isImmutable": false,
+            "isReadOnly": false,
+            "isolate": false,
+            "isReset": false,
+            "isCallNext": false,
+            "isImperative": false,
+            "id": "3",
+            "answerBlockId": "_fake_block_1",
+            "autoFocus": false,
+            "text": {
+              "components": [
+                {
+                  "type": "text",
+                  "value": "3"
+                }
+              ]
+            }
+          },
+          {
+            "isChecked": false,
+            "isImmutable": false,
+            "isReadOnly": false,
+            "isolate": false,
+            "isReset": false,
+            "isCallNext": false,
+            "isImperative": false,
+            "id": "4",
+            "answerBlockId": "_fake_block_1",
+            "autoFocus": false,
+            "text": {
+              "components": [
+                {
+                  "type": "text",
+                  "value": "4"
+                }
+              ]
+            }
+          },
+          {
+            "isChecked": false,
+            "isImmutable": false,
+            "isReadOnly": false,
+            "isolate": false,
+            "isReset": false,
+            "isCallNext": false,
+            "isImperative": false,
+            "id": "5",
+            "answerBlockId": "_fake_block_1",
+            "autoFocus": false,
+            "text": {
+              "components": [
+                {
+                  "type": "text",
+                  "value": "5"
+                }
+              ]
+            }
+          }
+        ],
+        "answerBlocks": [
+          {
+            "cols": 1,
+            "isIsolate": false,
+            "id": "_fake_block_1",
+            "isFix": false,
+            "position": 1,
+            "answerIds": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5"
+            ]
+          }
+        ],
+        "edgeLabels": {
+          "least": {
+            "components": [
+              {
+                "type": "text",
+                "value": "Совсем не согласен"
+              }
+            ]
+          },
+          "most": {
+            "components": [
+              {
+                "type": "text",
+                "value": "Полностью согласен"
+              }
+            ]
+          },
+          "orientation": "auto"
+        },
+        "minLetters": 0,
+        "searchEnabled": false,
+        "splitMode": "auto"
+      },
+      {
+        "maxAnswers": 0,
+        "minAnswers": 0,
+        "minVal": 0,
+        "maxVal": 0,
+        "precision": 1,
+        "opacitySelected": 0.5,
+        "opacityHover": 0.5,
+        "isMultiple": false,
+        "isVisible": true,
+        "isCallNext": false,
+        "isAutoScroll": true,
+        "isImperative": true,
+        "hasGradient": true,
+        "isGradientReversed": false,
+        "hasStep": false,
+        "isSubUnionQuestion": false,
+        "isImmutable": false,
+        "isReversed": false,
+        "callNext": false,
+        "dragItemAllowClick": false,
+        "rounds": false,
+        "center": false,
+        "isStretched": false,
+        "isReadOnly": false,
+        "fillSelected": false,
+        "isGradientHoverOnly": false,
+        "isOpenType": false,
+        "id": "A4_2",
+        "questionBlockId": "_fake_block_A4_2",
+        "type": "scale",
+        "orientation": "horizontal",
+        "chosenLabelAlign": "right",
+        "fillType": "gain",
+        "answerTextAlign": "center",
+        "scaleByHeight": false,
+        "header": {
+          "text": {
+            "components": [
+              {
+                "type": "text",
+                "value": "\u003Cp\u003E"
+              },
+              {
+                "type": "text",
+                "value": "Понятно, какой размер выгоды я получу"
+              },
+              {
+                "type": "text",
+                "value": "\u003C/p\u003E"
+              }
+            ]
+          },
+          "isFixed": false
+        },
+        "hint": {
+          "text": {
+            "components": [
+              {
+                "type": "text",
+                "value": "Оцените по шкале от 1 до 5"
+              }
+            ]
+          },
+          "isFixed": false
+        },
+        "answers": [
+          {
+            "isChecked": false,
+            "isImmutable": false,
+            "isReadOnly": false,
+            "isolate": false,
+            "isReset": false,
+            "isCallNext": false,
+            "isImperative": false,
+            "id": "1",
+            "answerBlockId": "_fake_block_1",
+            "autoFocus": false,
+            "text": {
+              "components": [
+                {
+                  "type": "text",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          {
+            "isChecked": false,
+            "isImmutable": false,
+            "isReadOnly": false,
+            "isolate": false,
+            "isReset": false,
+            "isCallNext": false,
+            "isImperative": false,
+            "id": "2",
+            "answerBlockId": "_fake_block_1",
+            "autoFocus": false,
+            "text": {
+              "components": [
+                {
+                  "type": "text",
+                  "value": "2"
+                }
+              ]
+            }
+          },
+          {
+            "isChecked": false,
+            "isImmutable": false,
+            "isReadOnly": false,
+            "isolate": false,
+            "isReset": false,
+            "isCallNext": false,
+            "isImperative": false,
+            "id": "3",
+            "answerBlockId": "_fake_block_1",
+            "autoFocus": false,
+            "text": {
+              "components": [
+                {
+                  "type": "text",
+                  "value": "3"
+                }
+              ]
+            }
+          },
+          {
+            "isChecked": false,
+            "isImmutable": false,
+            "isReadOnly": false,
+            "isolate": false,
+            "isReset": false,
+            "isCallNext": false,
+            "isImperative": false,
+            "id": "4",
+            "answerBlockId": "_fake_block_1",
+            "autoFocus": false,
+            "text": {
+              "components": [
+                {
+                  "type": "text",
+                  "value": "4"
+                }
+              ]
+            }
+          },
+          {
+            "isChecked": false,
+            "isImmutable": false,
+            "isReadOnly": false,
+            "isolate": false,
+            "isReset": false,
+            "isCallNext": false,
+            "isImperative": false,
+            "id": "5",
+            "answerBlockId": "_fake_block_1",
+            "autoFocus": false,
+            "text": {
+              "components": [
+                {
+                  "type": "text",
+                  "value": "5"
+                }
+              ]
+            }
+          }
+        ],
+        "answerBlocks": [
+          {
+            "cols": 1,
+            "isIsolate": false,
+            "id": "_fake_block_1",
+            "isFix": false,
+            "position": 1,
+            "answerIds": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5"
+            ]
+          }
+        ],
+        "edgeLabels": {
+          "least": {
+            "components": [
+              {
+                "type": "text",
+                "value": "Совсем не согласен"
+              }
+            ]
+          },
+          "most": {
+            "components": [
+              {
+                "type": "text",
+                "value": "Полностью согласен"
+              }
+            ]
+          },
+          "orientation": "auto"
+        },
+        "minLetters": 0,
+        "searchEnabled": false,
+        "splitMode": "auto"
+      },
+      {
+        "maxAnswers": 0,
+        "minAnswers": 0,
+        "minVal": 0,
+        "maxVal": 0,
+        "precision": 1,
+        "opacitySelected": 0.5,
+        "opacityHover": 0.5,
+        "isMultiple": false,
+        "isVisible": true,
+        "isCallNext": false,
+        "isAutoScroll": true,
+        "isImperative": true,
+        "hasGradient": true,
+        "isGradientReversed": false,
+        "hasStep": false,
+        "isSubUnionQuestion": false,
+        "isImmutable": false,
+        "isReversed": false,
+        "callNext": false,
+        "dragItemAllowClick": false,
+        "rounds": false,
+        "center": false,
+        "isStretched": false,
+        "isReadOnly": false,
+        "fillSelected": false,
+        "isGradientHoverOnly": false,
+        "isOpenType": false,
+        "id": "A4_3",
+        "questionBlockId": "_fake_block_A4_3",
+        "type": "scale",
+        "orientation": "horizontal",
+        "chosenLabelAlign": "right",
+        "fillType": "gain",
+        "answerTextAlign": "center",
+        "scaleByHeight": false,
+        "header": {
+          "text": {
+            "components": [
+              {
+                "type": "text",
+                "value": "\u003Cp\u003E"
+              },
+              {
+                "type": "text",
+                "value": "Это выгодное предложение для меня"
+              },
+              {
+                "type": "text",
+                "value": "\u003C/p\u003E"
+              }
+            ]
+          },
+          "isFixed": false
+        },
+        "hint": {
+          "text": {
+            "components": [
+              {
+                "type": "text",
+                "value": "Оцените по шкале от 1 до 5"
+              }
+            ]
+          },
+          "isFixed": false
+        },
+        "answers": [
+          {
+            "isChecked": false,
+            "isImmutable": false,
+            "isReadOnly": false,
+            "isolate": false,
+            "isReset": false,
+            "isCallNext": false,
+            "isImperative": false,
+            "id": "1",
+            "answerBlockId": "_fake_block_1",
+            "autoFocus": false,
+            "text": {
+              "components": [
+                {
+                  "type": "text",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          {
+            "isChecked": false,
+            "isImmutable": false,
+            "isReadOnly": false,
+            "isolate": false,
+            "isReset": false,
+            "isCallNext": false,
+            "isImperative": false,
+            "id": "2",
+            "answerBlockId": "_fake_block_1",
+            "autoFocus": false,
+            "text": {
+              "components": [
+                {
+                  "type": "text",
+                  "value": "2"
+                }
+              ]
+            }
+          },
+          {
+            "isChecked": false,
+            "isImmutable": false,
+            "isReadOnly": false,
+            "isolate": false,
+            "isReset": false,
+            "isCallNext": false,
+            "isImperative": false,
+            "id": "3",
+            "answerBlockId": "_fake_block_1",
+            "autoFocus": false,
+            "text": {
+              "components": [
+                {
+                  "type": "text",
+                  "value": "3"
+                }
+              ]
+            }
+          },
+          {
+            "isChecked": false,
+            "isImmutable": false,
+            "isReadOnly": false,
+            "isolate": false,
+            "isReset": false,
+            "isCallNext": false,
+            "isImperative": false,
+            "id": "4",
+            "answerBlockId": "_fake_block_1",
+            "autoFocus": false,
+            "text": {
+              "components": [
+                {
+                  "type": "text",
+                  "value": "4"
+                }
+              ]
+            }
+          },
+          {
+            "isChecked": false,
+            "isImmutable": false,
+            "isReadOnly": false,
+            "isolate": false,
+            "isReset": false,
+            "isCallNext": false,
+            "isImperative": false,
+            "id": "5",
+            "answerBlockId": "_fake_block_1",
+            "autoFocus": false,
+            "text": {
+              "components": [
+                {
+                  "type": "text",
+                  "value": "5"
+                }
+              ]
+            }
+          }
+        ],
+        "answerBlocks": [
+          {
+            "cols": 1,
+            "isIsolate": false,
+            "id": "_fake_block_1",
+            "isFix": false,
+            "position": 1,
+            "answerIds": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5"
+            ]
+          }
+        ],
+        "edgeLabels": {
+          "least": {
+            "components": [
+              {
+                "type": "text",
+                "value": "Совсем не согласен"
+              }
+            ]
+          },
+          "most": {
+            "components": [
+              {
+                "type": "text",
+                "value": "Полностью согласен"
+              }
+            ]
+          },
+          "orientation": "auto"
+        },
+        "minLetters": 0,
+        "searchEnabled": false,
+        "splitMode": "auto"
+      },
+      {
+        "maxAnswers": 0,
+        "minAnswers": 0,
+        "minVal": 0,
+        "maxVal": 0,
+        "precision": 1,
+        "opacitySelected": 0.5,
+        "opacityHover": 0.5,
+        "isMultiple": false,
+        "isVisible": true,
+        "isCallNext": false,
+        "isAutoScroll": true,
+        "isImperative": true,
+        "hasGradient": true,
+        "isGradientReversed": false,
+        "hasStep": false,
+        "isSubUnionQuestion": false,
+        "isImmutable": false,
+        "isReversed": false,
+        "callNext": false,
+        "dragItemAllowClick": false,
+        "rounds": false,
+        "center": false,
+        "isStretched": false,
+        "isReadOnly": false,
+        "fillSelected": false,
+        "isGradientHoverOnly": false,
+        "isOpenType": false,
+        "id": "A4_4",
+        "questionBlockId": "_fake_block_A4_4",
+        "type": "scale",
+        "orientation": "horizontal",
+        "chosenLabelAlign": "right",
+        "fillType": "gain",
+        "answerTextAlign": "center",
+        "scaleByHeight": false,
+        "header": {
+          "text": {
+            "components": [
+              {
+                "type": "text",
+                "value": "\u003Cp\u003E"
+              },
+              {
+                "type": "text",
+                "value": "Это честное предложение без скрытых условий"
+              },
+              {
+                "type": "text",
+                "value": "\u003C/p\u003E"
+              }
+            ]
+          },
+          "isFixed": false
+        },
+        "hint": {
+          "text": {
+            "components": [
+              {
+                "type": "text",
+                "value": "Оцените по шкале от 1 до 5"
+              }
+            ]
+          },
+          "isFixed": false
+        },
+        "answers": [
+          {
+            "isChecked": false,
+            "isImmutable": false,
+            "isReadOnly": false,
+            "isolate": false,
+            "isReset": false,
+            "isCallNext": false,
+            "isImperative": false,
+            "id": "1",
+            "answerBlockId": "_fake_block_1",
+            "autoFocus": false,
+            "text": {
+              "components": [
+                {
+                  "type": "text",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          {
+            "isChecked": false,
+            "isImmutable": false,
+            "isReadOnly": false,
+            "isolate": false,
+            "isReset": false,
+            "isCallNext": false,
+            "isImperative": false,
+            "id": "2",
+            "answerBlockId": "_fake_block_1",
+            "autoFocus": false,
+            "text": {
+              "components": [
+                {
+                  "type": "text",
+                  "value": "2"
+                }
+              ]
+            }
+          },
+          {
+            "isChecked": false,
+            "isImmutable": false,
+            "isReadOnly": false,
+            "isolate": false,
+            "isReset": false,
+            "isCallNext": false,
+            "isImperative": false,
+            "id": "3",
+            "answerBlockId": "_fake_block_1",
+            "autoFocus": false,
+            "text": {
+              "components": [
+                {
+                  "type": "text",
+                  "value": "3"
+                }
+              ]
+            }
+          },
+          {
+            "isChecked": false,
+            "isImmutable": false,
+            "isReadOnly": false,
+            "isolate": false,
+            "isReset": false,
+            "isCallNext": false,
+            "isImperative": false,
+            "id": "4",
+            "answerBlockId": "_fake_block_1",
+            "autoFocus": false,
+            "text": {
+              "components": [
+                {
+                  "type": "text",
+                  "value": "4"
+                }
+              ]
+            }
+          },
+          {
+            "isChecked": false,
+            "isImmutable": false,
+            "isReadOnly": false,
+            "isolate": false,
+            "isReset": false,
+            "isCallNext": false,
+            "isImperative": false,
+            "id": "5",
+            "answerBlockId": "_fake_block_1",
+            "autoFocus": false,
+            "text": {
+              "components": [
+                {
+                  "type": "text",
+                  "value": "5"
+                }
+              ]
+            }
+          }
+        ],
+        "answerBlocks": [
+          {
+            "cols": 1,
+            "isIsolate": false,
+            "id": "_fake_block_1",
+            "isFix": false,
+            "position": 1,
+            "answerIds": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5"
+            ]
+          }
+        ],
+        "edgeLabels": {
+          "least": {
+            "components": [
+              {
+                "type": "text",
+                "value": "Совсем не согласен"
+              }
+            ]
+          },
+          "most": {
+            "components": [
+              {
+                "type": "text",
+                "value": "Полностью согласен"
+              }
+            ]
+          },
+          "orientation": "auto"
+        },
+        "minLetters": 0,
+        "searchEnabled": false,
+        "splitMode": "auto"
+      },
+      {
+        "maxAnswers": 0,
+        "minAnswers": 0,
+        "minVal": 0,
+        "maxVal": 0,
+        "precision": 1,
+        "opacitySelected": 0.5,
+        "opacityHover": 0.5,
+        "isMultiple": false,
+        "isVisible": true,
+        "isCallNext": false,
+        "isAutoScroll": true,
+        "isImperative": true,
+        "hasGradient": true,
+        "isGradientReversed": false,
+        "hasStep": false,
+        "isSubUnionQuestion": false,
+        "isImmutable": false,
+        "isReversed": false,
+        "callNext": false,
+        "dragItemAllowClick": false,
+        "rounds": false,
+        "center": false,
+        "isStretched": false,
+        "isReadOnly": false,
+        "fillSelected": false,
+        "isGradientHoverOnly": false,
+        "isOpenType": false,
+        "id": "A4_5",
+        "questionBlockId": "_fake_block_A4_5",
+        "type": "scale",
+        "orientation": "horizontal",
+        "chosenLabelAlign": "right",
+        "fillType": "gain",
+        "answerTextAlign": "center",
+        "scaleByHeight": false,
+        "header": {
+          "text": {
+            "components": [
+              {
+                "type": "text",
+                "value": "\u003Cp\u003E"
+              },
+              {
+                "type": "text",
+                "value": "Это предложение выделяется на фоне предложений других банков"
+              },
+              {
+                "type": "text",
+                "value": "\u003C/p\u003E"
+              }
+            ]
+          },
+          "isFixed": false
+        },
+        "hint": {
+          "text": {
+            "components": [
+              {
+                "type": "text",
+                "value": "Оцените по шкале от 1 до 5"
+              }
+            ]
+          },
+          "isFixed": false
+        },
+        "answers": [
+          {
+            "isChecked": false,
+            "isImmutable": false,
+            "isReadOnly": false,
+            "isolate": false,
+            "isReset": false,
+            "isCallNext": false,
+            "isImperative": false,
+            "id": "1",
+            "answerBlockId": "_fake_block_1",
+            "autoFocus": false,
+            "text": {
+              "components": [
+                {
+                  "type": "text",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          {
+            "isChecked": false,
+            "isImmutable": false,
+            "isReadOnly": false,
+            "isolate": false,
+            "isReset": false,
+            "isCallNext": false,
+            "isImperative": false,
+            "id": "2",
+            "answerBlockId": "_fake_block_1",
+            "autoFocus": false,
+            "text": {
+              "components": [
+                {
+                  "type": "text",
+                  "value": "2"
+                }
+              ]
+            }
+          },
+          {
+            "isChecked": false,
+            "isImmutable": false,
+            "isReadOnly": false,
+            "isolate": false,
+            "isReset": false,
+            "isCallNext": false,
+            "isImperative": false,
+            "id": "3",
+            "answerBlockId": "_fake_block_1",
+            "autoFocus": false,
+            "text": {
+              "components": [
+                {
+                  "type": "text",
+                  "value": "3"
+                }
+              ]
+            }
+          },
+          {
+            "isChecked": false,
+            "isImmutable": false,
+            "isReadOnly": false,
+            "isolate": false,
+            "isReset": false,
+            "isCallNext": false,
+            "isImperative": false,
+            "id": "4",
+            "answerBlockId": "_fake_block_1",
+            "autoFocus": false,
+            "text": {
+              "components": [
+                {
+                  "type": "text",
+                  "value": "4"
+                }
+              ]
+            }
+          },
+          {
+            "isChecked": false,
+            "isImmutable": false,
+            "isReadOnly": false,
+            "isolate": false,
+            "isReset": false,
+            "isCallNext": false,
+            "isImperative": false,
+            "id": "5",
+            "answerBlockId": "_fake_block_1",
+            "autoFocus": false,
+            "text": {
+              "components": [
+                {
+                  "type": "text",
+                  "value": "5"
+                }
+              ]
+            }
+          }
+        ],
+        "answerBlocks": [
+          {
+            "cols": 1,
+            "isIsolate": false,
+            "id": "_fake_block_1",
+            "isFix": false,
+            "position": 1,
+            "answerIds": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5"
+            ]
+          }
+        ],
+        "edgeLabels": {
+          "least": {
+            "components": [
+              {
+                "type": "text",
+                "value": "Совсем не согласен"
+              }
+            ]
+          },
+          "most": {
+            "components": [
+              {
+                "type": "text",
+                "value": "Полностью согласен"
+              }
+            ]
+          },
+          "orientation": "auto"
+        },
+        "minLetters": 0,
+        "searchEnabled": false,
+        "splitMode": "auto"
+      }
+    ],
+    "defaults": {
+      "nextButton": "Далее",
+      "prevButton": "Назад",
+      "emptyError": "Пожалуйста, не оставляйте вопросы без ответа",
+      "emptySupportComment": "Опишите вашу проблему",
+      "maxAnswersError": "Укажите, пожалуйста, меньшее количество ответов",
+      "minAnswersError": "Укажите, пожалуйста, большее количество ответов",
+      "minLengthError": "Пожалуйста, дайте подробный ответ",
+      "intError": "Пожалуйста, введите целое число",
+      "numberError": "Пожалуйста, введите число",
+      "dateError": "Пожалуйста, укажите дату",
+      "textError": "Пожалуйста, введите текст",
+      "rangeError": "Выбранный вариант ответа должен иметь другое значение",
+      "privacyText": "Политика конфиденциальности",
+      "supportHeader": "Опишите проблему здесь",
+      "supportCommentPlaceholder": null,
+      "supportSendText": "Отправить",
+      "supportSuccessText": "Спасибо! Информация о Вашей проблеме будет передана администрации проекта.",
+      "supportFailText": "Сообщение не было отправлено",
+      "supportText": "Нашли ошибку или что-то не работает?",
+      "hintRadioButton": "Один ответ",
+      "hintCheckBox": "Отметьте все подходящие ответы",
+      "hintText": "Запишите ответ в поле ниже",
+      "hintInteger": "Введите число в поле ниже",
+      "hintMemo": "Мы будем благодарны Вам за подробный ответ",
+      "hintMinAnswers": "Не менее @mincount ответов",
+      "hintEqualsAnswers": "Укажите точное количество ответов: @eqcount",
+      "hintMaxAnswers": "Не более @maxcount ответов",
+      "mediaPlayerVideoError": "Пожалуйста, досмотрите видеоролик до конца",
+      "mediaPlayerAudioError": "Пожалуйста, дослушайте аудиозапись до конца",
+      "buttonTimeoutWaitText": "Ждите @Countdown сек",
+      "popupOkText": "Ок",
+      "popupCancelText": "Отмена",
+      "clickPointRemoveText": "Удалить",
+      "changeScreenOrientationText": "ПОВЕРНИТЕ ВАШЕ УСТРОЙСТВО",
+      "equalsAnswersError": "Укажите, пожалуйста, точное количество ответов",
+      "lengthError": "Введённый Вами текст слишком длинный",
+      "culture": "RU",
+      "agreementText": "Пользовательское соглашение",
+      "supportSuccessButtonText": "Ок",
+      "hintContentOnlySingle": "Один ответ",
+      "hintContentOnlyMulti": "Отметьте все подходящие ответы",
+      "hintAutoCompleteSingle": "Один ответ",
+      "showNextButton": true,
+      "showPrevButton": false,
+      "maxAnswersDisable": true,
+      "showProgress": true,
+      "showPrivacy": true,
+      "showSupportCategories": false,
+      "windowBlockedText": "Не удалось открыть окно. Возможно, оно заблокировано браузером",
+      "showQuestionIds": false
+    },
+    "validates": [],
+    "jsFilters": [],
+    "backendFunctions": []
+  },
+  "debugData": {
+    "errors": []
+  },
+  "supportCategories": [
+    {
+      "id": 14,
+      "title": "The survey is not loading, it gets stuck during completion"
+    },
+    {
+      "id": 15,
+      "title": "Unable to answer the question (button doesn\u0027t work, images don\u0027t load, etc.)"
+    },
+    {
+      "id": 17,
+      "title": "Other"
+    },
+    {
+      "id": 16,
+      "title": "There is no suitable answer to the question in the survey"
+    }
+  ]
+};
+        window.__ISDEBUG__ = false;
+        let baseConsoleTrace = console.trace;
+        let baseConsoleInfo = console.info;
+        let baseConsoleLog = console.log;
+        let baseConsoleDebug = console.debug;
+        let baseConsoleWarn = console.warn;
+        let baseConsoleError = console.error;
+        console.trace = function(...args) { if (false) baseConsoleTrace(...args) }
+        console.info = function(...args) { if (false) baseConsoleInfo(...args) }
+        console.log = function(...args) { if (false) baseConsoleLog(...args) }
+        console.debug = function(...args) { if (false) baseConsoleDebug(...args) }
+        console.warn = function(...args) { if (false) baseConsoleWarn(...args) }
+        console.error = function(...args) { args.map(x => {
+            if (false || (typeof x === 'string' && x.indexOf('Warning: ') === -1)) baseConsoleError(...args) })
+        }</script><script defer="defer" src="/FastunaProd_DiyPro2_6767_40498F-6ME/resource/881.bb52fcf0.js"></script><script defer="defer" src="/FastunaProd_DiyPro2_6767_40498F-6ME/resource/main.3b8088c0.js"></script></body></html>
