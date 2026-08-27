@@ -473,32 +473,31 @@ class BaseSurveyEngine:
 
     async def click_next(self, page: Page) -> bool:
         await state.wait_debug_confirm()
-
         try:
             await self.sync_memory_from_dom(page)
         except Exception:
             pass
 
         selectors = [
-            "text='ДАЛЕЕ'",
-            "text='Далее'",
-            "text='Вперед'",
-            "text='Продолжить'",
+            "button:has-text('ДАЛЕЕ')",
             "button:has-text('Далее')",
             "button:has-text('Вперед')",
+            "button:has-text('Продолжить')",
             ".btn-next",
-            "button[type='submit']"
+            "button[type='submit']",
+            "text=ДАЛЕЕ",
+            "text=Далее",
+            "text=Вперед"
         ]
 
         for sel in selectors:
             try:
-                elements = await page.query_selector_all(sel)
-                for btn in elements:
-                    if await btn.is_visible():
-                        await btn.scroll_into_view_if_needed()
-                        await btn.click(force=True)
-                        print(f"[i] [BASE] Нажата кнопка (найдено по: {sel})")
-                        return True
+                locator = page.locator(sel).first
+                if await locator.is_visible(timeout=1000):
+                    await locator.scroll_into_view_if_needed()
+                    await locator.click(force=True)
+                    print(f"[i] [BASE] Нажата кнопка (найдено по: {sel})")
+                    return True
             except Exception:
                 continue
 

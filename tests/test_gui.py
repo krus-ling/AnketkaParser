@@ -116,67 +116,109 @@ HTML_SAWTOOTH_TRICKY = f"""<!DOCTYPE html><html lang="ru"><head><meta charset="U
     <div id="step-4" class="step"><h2>Успешно пройдено!</h2></div>
 </div></body></html>"""
 
-HTML_SURVEYSTUDIO_TRICKY = f"""<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8"><title>Mock SurveyStudio</title>{CSS_AND_JS_CLOUD}</head><body>
-<div class="survey-container">
-    <!-- Выбор пола -->
-    <div id="step-1" class="step active">
-        <div class="ss-question-title">Выберите ваш пол</div>
-        <div class="question-content">
-            <div class="grid__cell"><label for="Q1_1">Женский</label><input type="radio" id="Q1_1" name="Q1"></div>
-            <div class="grid__cell"><label for="Q1_2">Мужской</label><input type="radio" id="Q1_2" name="Q1"></div>
-        </div>
-        <button id="processingGoForwardBtn" class="btn" onclick="next('step-2')">Далее</button>
-    </div>
-    <!-- Ловушка 2: Поле типа NUMBER (Вырезка букв) -->
-    <div id="step-2" class="step">
-        <div class="ss-question-title">Какова была примерная сумма того заказа? Укажите сумму в рублях.</div>
-        <input type="number" id="num_input" name="num_input" class="custom-input" placeholder="Введите число...">
-        <button id="processingGoForwardBtn" class="btn" onclick="next('step-3')">Далее</button>
-    </div>
-    <!-- Ловушка 3: Город (Combobox SurveyStudio) -->
-    <div id="step-3" class="step">
-        <div class="ss-question-title">В каком городе Вы постоянно проживаете (не менее 7 месяцев в году)?</div>
-        <div class="combobox-container">
-            <select class="ss-search-select select2-hidden-accessible">
-                <option value="0">Выберите город</option>
-                <option value="Москва">Москва</option>
-                <option value="Казань">Казань</option>
-            </select>
-            <input type="text" placeholder="Начните вводить название..." class="custom-input">
-        </div>
-        <button id="processingGoForwardBtn" class="btn" onclick="next('step-4')">Далее</button>
-    </div>
-    <!-- Ловушка 4: Смещенная шапка матрицы (пустая левая верхняя ячейка) -->
-    <div id="step-4" class="step">
-        <div class="ss-question-title">Насколько вы согласны или не согласны с каждым утверждением?</div>
-        <div id="ssDesktopTable">
-            <div class="ss-table-header">
-                <div class="ss-table-header-empty"></div> <!-- ПУСТАЯ ЯЧЕЙКА (сдвигает индексы) -->
-                <div class="ss-table-header-titles">
-                    <div class="ss-table-cell">5. Полностью согласен(-на)</div>
-                    <div class="ss-table-cell">4. Скорее согласен(-на)</div>
-                    <div class="ss-table-cell">1. Совершенно НЕ согласен(-на)</div>
-                </div>
-            </div>
-            <div class="ss-matrix-body">
-                <div class="ss-first-table-container">
-                    <div class="ss-table-row">Замороженные полуфабрикаты позволяют мне сделать мой рацион разнообразным</div>
-                    <div class="ss-table-row">Тяжесть или дискомфорт говорит о невысоком качестве</div>
-                </div>
-                <div id="ssDesktopTableBodyContainer">
-                    <div class="ss-table-row">
-                        <input type="radio" name="m1"><input type="radio" name="m1"><input type="radio" name="m1">
-                    </div>
-                    <div class="ss-table-row">
-                        <input type="radio" name="m2"><input type="radio" name="m2"><input type="radio" name="m2">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <button id="processingGoForwardBtn" class="btn" onclick="next('step-5')">Далее</button>
-    </div>
-    <div id="step-5" class="step"><h2>Опрос успешно завершен!</h2></div>
-</div></body></html>"""
+# В файле test_gui.py замените HTML_SURVEYSTUDIO_TRICKY на этот:
+
+HTML_SURVEYSTUDIO_TRICKY = f"""{CSS_AND_JS_CLOUD}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>SurveyStudio Test</title>
+<style>
+    body {{ font-family: Arial, sans-serif; padding: 20px; background: #f4f4f4; }}
+    .question-content {{ background: white; padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }}
+    .ss-question-title {{ font-size: 18px; font-weight: bold; margin-bottom: 15px; }}
+    label {{ display: block; margin: 10px 0; cursor: pointer; }}
+    input[type="number"], select {{ padding: 8px; width: 100%; max-width: 300px; margin-top: 5px; }}
+    #processingGoForwardBtn {{ padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; margin-top: 15px; }}
+    #processingGoForwardBtn:hover {{ background: #0056b3; }}
+</style>
+</head>
+<body>
+
+<!-- Вопрос 1: Пол (Radio) -->
+<div class="question-content">
+    <div class="ss-question-title">Выберите ваш пол</div>
+    <label><input type="radio" name="gender" value="f"> Женский</label>
+    <label><input type="radio" name="gender" value="m"> Мужской</label>
+    <button id="processingGoForwardBtn">Далее</button>
+</div>
+
+<!-- Вопрос 2: Сумма (Number Input) -->
+<div class="question-content" style="display:none;" id="q2">
+    <div class="ss-question-title">Какова была примерная сумма того заказа? Укажите сумму в рублях.</div>
+    <input type="number" id="money_input" placeholder="Сумма">
+    <button id="processingGoForwardBtn">Далее</button>
+</div>
+
+<!-- Вопрос 3: Город (Select) -->
+<div class="question-content" style="display:none;" id="q3">
+    <div class="ss-question-title">В каком городе Вы постоянно проживаете (не менее 7 месяцев в году)?</div>
+    <select id="city_select">
+        <option value="0">Выберите город</option>
+        <option value="msk">Москва</option>
+        <option value="kzn">Казань</option>
+        <option value="spb">Санкт-Петербург</option>
+    </select>
+    <button id="processingGoForwardBtn">Далее</button>
+</div>
+
+<!-- Вопрос 4: Матрица (Упрощенная) -->
+<div class="question-content" style="display:none;" id="q4">
+    <div class="ss-question-title">Насколько вы согласны или не согласны с каждым утверждением?</div>
+    <table style="width:100%; text-align:left;">
+        <tr>
+            <th>Утверждение</th>
+            <th>Согласен</th>
+            <th>Не согласен</th>
+        </tr>
+        <tr>
+            <td>Замороженные полуфабрикаты позволяют мне сделать мой рацион разнообразным</td>
+            <td><input type="radio" name="m1" value="agree"></td>
+            <td><input type="radio" name="m1" value="disagree"></td>
+        </tr>
+        <tr>
+            <td>Тяжесть или дискомфорт говорит о невысоком качестве</td>
+            <td><input type="radio" name="m2" value="agree"></td>
+            <td><input type="radio" name="m2" value="disagree"></td>
+        </tr>
+    </table>
+    <button id="processingGoForwardBtn">Далее</button>
+</div>
+
+<div class="question-content" style="display:none;" id="q5">
+    <div class="ss-question-title">Опрос успешно завершен!</div>
+    <p>Спасибо за участие. Вознаграждение зачислено.</p>
+</div>
+
+<script>
+    let currentQ = 1;
+    document.querySelectorAll('#processingGoForwardBtn').forEach(btn => {{
+        btn.addEventListener('click', function() {{
+            // Простая валидация для теста
+            if (currentQ === 1) {{
+                let gender = document.querySelector('input[name="gender"]:checked');
+                if (!gender) {{alert('Выберите пол!'); return;}}
+            }} else if (currentQ === 2) {{
+                let money = document.getElementById('money_input').value;
+                if (!money) {{alert('Укажите сумму!'); return;}}
+            }} else if (currentQ == = 3) {{
+                let city = document.getElementById('city_select').value;
+                if (city == = '0') {{alert('Выберите город!'); return;}}
+            }}
+            
+            document.getElementById('q' + currentQ).style.display = 'none';
+            currentQ++;
+            let nextQ = document.getElementById('q' + currentQ);
+            if (nextQ) {{
+                nextQ.style.display = 'block';
+            }}
+        }});
+    );
+</script>
+</body>
+</html>
+"""
 
 # В начало файла test_gui.py, после HTML_SURVEYSTUDIO_TRICKY, добавьте:
 
