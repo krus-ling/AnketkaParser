@@ -5,13 +5,12 @@ from engines.anketka import AnketkaEngine
 from engines.cloudsurvey import CloudSurveyEngine
 from engines.chat_survey import ChatSurveyEngine
 from engines.base import human_sleep
-from brain import SurveyBrain
-import config
+from core.brain import SurveyBrain
 from engines.profiresearch import ProfiResearchEngine
 from engines.anketolog import AnketologEngine
 from engines.surveystudio import SurveyStudioEngine
 from engines.sawtooth import SawtoothEngine
-from bot_state import state  # <-- Убедитесь, что state импортирован
+from core.bot_state import state  # <-- Убедитесь, что state импортирован
 
 
 class SurveyRouter:

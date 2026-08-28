@@ -1,5 +1,5 @@
 import asyncio
-from brain import SurveyBrain
+from core.brain import SurveyBrain
 from engines import SurveyRouter
 
 async def main():

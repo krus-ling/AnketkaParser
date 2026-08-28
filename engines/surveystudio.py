@@ -1,7 +1,8 @@
-import asyncio
+import random
+import re
 from playwright.async_api import Page
 from engines.base import BaseSurveyEngine, human_sleep
-from bot_state import state
+from core.bot_state import state
 
 
 class SurveyStudioEngine(BaseSurveyEngine):
@@ -14,7 +15,6 @@ class SurveyStudioEngine(BaseSurveyEngine):
         except Exception:
             pass
 
-        # Используем надежные локаторы Playwright (без невалидных кавычек в text=)
         selectors = [
             "#processingGoForwardBtn",
             ".next-button",
@@ -23,15 +23,13 @@ class SurveyStudioEngine(BaseSurveyEngine):
             "button:has-text('НАЧАТЬ')",
             "button:has-text('Начать')",
             "div:has-text('ДАЛЕЕ')",
-            "div:has-text('Далее')",
-            "text=ДАЛЕЕ",
-            "text=Далее"
+            "div:has-text('Далее')"
         ]
 
         for sel in selectors:
             try:
                 locator = page.locator(sel).first
-                if await locator.is_visible(timeout=1000):
+                if await locator.is_visible(timeout=500):
                     await locator.scroll_into_view_if_needed()
                     await locator.click(force=True)
                     print(f"[i] [SURVEY-STUDIO] Нажата кнопка (найдено по: {sel})")
@@ -39,22 +37,20 @@ class SurveyStudioEngine(BaseSurveyEngine):
             except Exception:
                 continue
 
-        # Fallback: поиск по всем кнопкам и div с ключевыми словами через JS
         try:
             btn_handle = await page.evaluate_handle("""() => {
                 let kws = ['далее', 'вперед', 'продолжить', 'начать'];
-                let candidates = Array.from(document.querySelectorAll('button, div, span, a')).filter(el => {
+                let candidates = Array.from(document.querySelectorAll('button, div, span, a, input[type="submit"], input[type="button"]')).filter(el => {
                     if (el.offsetParent === null) return false;
                     let style = window.getComputedStyle(el);
                     if (style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0') return false;
                     let txt = (el.innerText || el.value || '').trim().toLowerCase();
                     if (txt.length === 0 || txt.length > 50) return false;
-                    let isBtn = el.tagName === 'BUTTON' || el.tagName === 'A' || (el.className || '').toLowerCase().includes('btn') || (el.className || '').toLowerCase().includes('button');
+                    let isBtn = el.tagName === 'BUTTON' || el.tagName === 'A' || el.tagName === 'INPUT' || (el.className || '').toLowerCase().includes('btn') || (el.className || '').toLowerCase().includes('button');
                     let hasKw = kws.some(kw => txt === kw || txt.includes(kw));
                     return isBtn && hasKw;
                 });
                 if (candidates.length > 0) {
-                    // Сортируем по количеству вложенных элементов, чтобы выбрать самый конкретный (листья дерева)
                     candidates.sort((a, b) => a.querySelectorAll('*').length - b.querySelectorAll('*').length);
                     return candidates[0];
                 }
@@ -63,7 +59,6 @@ class SurveyStudioEngine(BaseSurveyEngine):
 
             if not await btn_handle.evaluate("el => !el"):
                 await btn_handle.scroll_into_view_if_needed()
-                # Эмуляция полного цикла событий мыши для React/Vue
                 await btn_handle.evaluate("""el => {
                     ['pointerdown', 'mousedown', 'pointerup', 'mouseup', 'click'].forEach(evt => {
                         el.dispatchEvent(new MouseEvent(evt, {bubbles: true, cancelable: true, view: window}));
@@ -145,9 +140,7 @@ class SurveyStudioEngine(BaseSurveyEngine):
 
         if matrix_data and matrix_data["rows"]:
             unanswered = [r for r in matrix_data["rows"] if not r["isAnswered"]]
-            if not unanswered:
-                pass  # Проваливаемся к обычной проверке, вдруг там еще что-то есть
-            else:
+            if unanswered:
                 col_options = matrix_data["colHeaders"]
                 print("\n" + "=" * 60)
                 print(f"📊 [ТАБЛИЦА / МАТРИЦА]: {matrix_data['qText']}")
@@ -189,7 +182,7 @@ class SurveyStudioEngine(BaseSurveyEngine):
                 await self.click_next(page)
                 return True
 
-        # 2. ОБЫЧНЫЕ ВОПРОСЫ (Исправленный парсер)
+        # 2. ОБЫЧНЫЕ ВОПРОСЫ
         data = await page.evaluate("""() => {
             function isVisible(el) {
                 if (!el) return false;
@@ -208,9 +201,11 @@ class SurveyStudioEngine(BaseSurveyEngine):
             }
             if (!qText) qText = document.title || "Неизвестный вопрос";
 
-            let container = document.querySelector('.question-content, .ss-answers, .step.active') || document.body;
+            // ИЩЕМ ТОЛЬКО ВИДИМЫЙ КОНТЕЙНЕР
+            let containerBlocks = Array.from(document.querySelectorAll('.question-content, .ss-answers, .step.active, form')).filter(isVisible);
+            let container = containerBlocks.length > 0 ? containerBlocks[0] : document.body;
 
-            // 2. ПРОВЕРКА ТЕКСТОВЫХ ПОЛЕЙ (Приоритет выше, чем у селектов, чтобы не путать "сумму" с выпадающим списком)
+            // 2. ПРОВЕРКА ТЕКСТОВЫХ ПОЛЕЙ
             let textInputs = Array.from(container.querySelectorAll('input[type="text"], input[type="number"], input[inputmode="numeric"], textarea')).filter(i => {
                 if (!isVisible(i)) return false;
                 if (i.id.includes('_other') || i.name.includes('_other')) return false;
@@ -230,15 +225,18 @@ class SurveyStudioEngine(BaseSurveyEngine):
             // 3. ПРОВЕРКА ВЫПАДАЮЩИХ СПИСКОВ (Select)
             let selectEl = Array.from(container.querySelectorAll('select')).find(s => {
                 if (s.disabled) return false;
-                if (!isVisible(s) && !s.classList.contains('select2-hidden-accessible') && !s.classList.contains('ss-search-select')) return false;
-                let selectedOpts = Array.from(s.selectedOptions).filter(o => o.value && o.value !== '0' && !o.innerText.toLowerCase().includes('выбер'));
-                return selectedOpts.length === 0; // Еще не отвечено
+
+                let selectedOpts = Array.from(s.selectedOptions).filter(o => o.value && o.value !== '0' && !(o.innerText || o.textContent || '').toLowerCase().includes('выбер'));
+                if (selectedOpts.length > 0) return false;
+
+                let opts = Array.from(s.options).filter(o => o.value && o.value !== '0' && !(o.innerText || o.textContent || '').toLowerCase().includes('выбер'));
+                return opts.length > 0;
             });
 
             if (selectEl) {
-                let options = Array.from(selectEl.querySelectorAll('option'))
-                    .filter(o => o.value && o.value !== '0' && !o.innerText.toLowerCase().includes('выбер'))
-                    .map(o => o.innerText.replace(/\\s+/g, ' ').trim());
+                let options = Array.from(selectEl.options)
+                    .filter(o => o.value && o.value !== '0' && !(o.innerText || o.textContent || '').toLowerCase().includes('выбер'))
+                    .map(o => (o.innerText || o.textContent || '').replace(/\\s+/g, ' ').trim());
                 if (options.length > 0) {
                     selectEl.setAttribute('data-bot-target-select', 'true');
                     return {targetType: 'select', questionText: qText, options: options, isMulti: selectEl.multiple};
@@ -246,11 +244,11 @@ class SurveyStudioEngine(BaseSurveyEngine):
             }
 
             // 4. ПРОВЕРКА ВАРИАНТОВ ОТВЕТА (Radio/Checkbox)
-            let choiceRows = Array.from(container.querySelectorAll('label, .grid__cell, tr, .ss-choice-item')).filter(r => {
+            let choiceRows = Array.from(container.querySelectorAll('label, .grid__cell, tr, .ss-choice-item, .answer-item')).filter(r => {
                 return isVisible(r) && r.querySelector('input[type="radio"], input[type="checkbox"]') !== null;
             });
 
-            // Оставляем только самые глубокие элементы (убираем родительские обертки, если они тоже попали)
+            // Оставляем только самые глубокие элементы
             choiceRows = choiceRows.filter(r => !choiceRows.some(other => other !== r && other.contains(r)));
 
             if (choiceRows.length >= 2) {
@@ -262,16 +260,11 @@ class SurveyStudioEngine(BaseSurveyEngine):
                 if (!isAnswered) {
                     let isMulti = choiceRows.some(r => r.querySelector('input[type="checkbox"]') !== null);
                     let options = choiceRows.map((r, i) => {
-                        // Надежное получение текста: берем весь текст лейбла/строки и чистим его
                         let t = r.innerText.replace(/\\s+/g, ' ').trim();
-
-                        // Если вдруг текст пустой, ищем вложенные элементы
                         if (!t || t.length < 2) {
                             let label = r.querySelector('label, span, div');
                             if (label) t = label.innerText.replace(/\\s+/g, ' ').trim();
                         }
-
-                        // Проверка на поле "Свой вариант"
                         let inpField = r.querySelector('input[type="text"]');
                         if (inpField) {
                             t = "Свой вариант" + (inpField.placeholder ? ": " + inpField.placeholder : "");
@@ -291,7 +284,6 @@ class SurveyStudioEngine(BaseSurveyEngine):
         if data["targetType"] == "done_or_info":
             if total_handled == 0 and data["questionText"]:
                 print(f"\n📄 [ИНФО-ЭКРАН]: {data['questionText']}")
-            # Если это инфо-экран, просто жмем далее
             if total_handled == 0:
                 await human_sleep(1.0, 1.5)
                 await self.click_next(page)
@@ -307,20 +299,36 @@ class SurveyStudioEngine(BaseSurveyEngine):
                 except Exception:
                     pass
                 print(f"✍️  [ВВОД]: {ans_text}")
-                await page.evaluate("""(text) => {
-                    let inp = document.querySelector('[data-bot-target="true"]');
-                    if (inp) {
-                        inp.focus();
-                        if (inp.type === 'number') {
-                            text = text.replace(/\\D/g, '');
-                            if (!text) text = "1500";
+
+                target_input = await page.query_selector('[data-bot-target="true"]')
+                if target_input:
+                    await target_input.scroll_into_view_if_needed()
+                    await target_input.click(force=True)
+
+                    await page.evaluate("""({inp, txt}) => {
+                        let type = (inp.getAttribute('type') || '').toLowerCase();
+                        let mode = (inp.getAttribute('inputmode') || '').toLowerCase();
+                        if (type === 'number' || mode === 'numeric') {
+                            txt = txt.replace(/\\D/g, '');
+                            if (!txt) txt = "1500";
                         }
-                        inp.value = text;
-                        inp.dispatchEvent(new Event('input', {bubbles: true}));
-                        inp.dispatchEvent(new Event('change', {bubbles: true}));
-                        inp.removeAttribute('data-bot-target');
-                    }
-                }""", ans_text)
+                        inp.value = '';
+                        inp.focus();
+                    }""", {"inp": target_input, "txt": ans_text})
+
+                    input_type = await target_input.get_attribute("type")
+                    if input_type == "number":
+                        ans_text = re.sub(r'\D', '', ans_text)
+                        if not ans_text:
+                            ans_text = "1500"
+
+                    await page.keyboard.type(ans_text, delay=random.randint(50, 90))
+
+                    await page.evaluate("""() => {
+                        let inp = document.querySelector('[data-bot-target="true"]');
+                        if (inp) inp.removeAttribute('data-bot-target');
+                    }""")
+
                 total_handled += 1
                 await human_sleep(0.5, 1.0)
                 await self.click_next(page)
@@ -345,7 +353,7 @@ class SurveyStudioEngine(BaseSurveyEngine):
                     await page.evaluate("""(idx) => {
                         let sel = document.querySelector('select[data-bot-target-select="true"]');
                         if (sel) {
-                            let opts = Array.from(sel.querySelectorAll('option')).filter(o => o.value && o.value !== '0' && !o.innerText.toLowerCase().includes('выбер'));
+                            let opts = Array.from(sel.options).filter(o => o.value && o.value !== '0' && !(o.innerText || o.textContent || '').toLowerCase().includes('выбер'));
                             if (opts[idx]) {
                                 sel.value = opts[idx].value;
                                 sel.dispatchEvent(new Event('change', {bubbles: true}));
@@ -387,8 +395,10 @@ class SurveyStudioEngine(BaseSurveyEngine):
                             return rect.width > 0 && rect.height > 0;
                         }
 
-                        let container = document.querySelector('.question-content, .ss-answers, .step.active') || document.body;
-                        let rows = Array.from(container.querySelectorAll('label, .grid__cell, tr, .ss-choice-item')).filter(r => isVisible(r) && r.querySelector('input[type="radio"], input[type="checkbox"]') !== null);
+                        let containerBlocks = Array.from(document.querySelectorAll('.question-content, .ss-answers, .step.active, form')).filter(isVisible);
+                        let container = containerBlocks.length > 0 ? containerBlocks[0] : document.body;
+
+                        let rows = Array.from(container.querySelectorAll('label, .grid__cell, tr, .ss-choice-item, .answer-item')).filter(r => isVisible(r) && r.querySelector('input[type="radio"], input[type="checkbox"]') !== null);
                         rows = rows.filter(r => !rows.some(other => other !== r && other.contains(r)));
 
                         if (rows[idx]) {

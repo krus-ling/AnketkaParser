@@ -2,7 +2,7 @@ import json
 import sqlite3
 import tkinter as tk
 from tkinter import messagebox, ttk
-from memory import DB_PATH, SurveyMemory
+from core.memory import DB_PATH, SurveyMemory
 
 # Цветовая палитра Dark Slate (Tailwind-style)
 BG_MAIN = "#0b0f19"

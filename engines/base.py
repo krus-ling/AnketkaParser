@@ -5,6 +5,8 @@ import re
 from playwright.async_api import Page
 from brain import SurveyBrain
 from bot_state import state
+from engines.js_snippets import JS_SYNC_MEMORY
+
 
 MONTH_NAMES = {
     1: ["январь", "января", "01", "1"],
@@ -46,183 +48,7 @@ class BaseSurveyEngine:
 
     async def sync_memory_from_dom(self, page: Page):
         try:
-            data = await page.evaluate("""() => {
-                let results = [];
-
-                function isVisible(el) {
-                    if (!el || el.nodeType !== 1) return false;
-                    if (el.offsetParent === null) return false;
-                    let style = window.getComputedStyle(el);
-                    if (style.visibility === 'hidden' || style.opacity === '0' || style.display === 'none') return false;
-                    let rect = el.getBoundingClientRect();
-                    return rect.width > 0 && rect.height > 0;
-                }
-
-                function getCleanText(el) {
-                    if (!el) return "";
-                    let ru = el.querySelector('span._ru, ._ru');
-                    if (ru) {
-                        let t = (ru.innerText || ru.textContent || "").trim();
-                        if (t) return t;
-                    }
-                    let img = el.querySelector('img');
-                    if (img) {
-                        let t = img.getAttribute('title') || img.getAttribute('data-template') || img.getAttribute('alt') || "";
-                        if (t) return t.trim();
-                    }
-                    let clone = el.cloneNode(true);
-                    Array.from(clone.querySelectorAll('._uk, ._kz, ._tj, ._ge, ._ar, ._md, ._az, ._uz, ._kg')).forEach(s => s.remove());
-                    return (clone.innerText || clone.textContent || "").replace(/\\s+/g, ' ').trim();
-                }
-
-                let questionBlocks = Array.from(document.querySelectorAll('.question-content, .ss-answers, .pr-question, .question__element-wrapper, form')).filter(isVisible);
-                if (questionBlocks.length === 0) questionBlocks = [document.body];
-
-                function getClosestTitle(block) {
-                    let titleSelectors = '.header1, .header2, .question-text, .ss-question-title, pr-question-title, .question-title, h1, h2, h3';
-                    let title = block.querySelector(titleSelectors);
-                    if (title && isVisible(title)) {
-                        let t = getCleanText(title).replace(/\\*$/, '').trim();
-                        if (t) return t;
-                    }
-
-                    let parent = block;
-                    while (parent && parent.tagName !== 'BODY') {
-                        let prev = parent.previousElementSibling;
-                        while (prev) {
-                            if (isVisible(prev)) {
-                                if (prev.matches(titleSelectors)) {
-                                    let t = getCleanText(prev).replace(/\\*$/, '').trim();
-                                    if (t) return t;
-                                }
-                                let inside = prev.querySelector(titleSelectors);
-                                if (inside && isVisible(inside)) {
-                                    let t = getCleanText(inside).replace(/\\*$/, '').trim();
-                                    if (t) return t;
-                                }
-                            }
-                            prev = prev.previousElementSibling;
-                        }
-                        parent = parent.parentElement;
-                    }
-
-                    let allTitles = Array.from(document.querySelectorAll(titleSelectors)).filter(isVisible);
-                    for (let el of allTitles) {
-                        let t = getCleanText(el).replace(/\\*$/, '').trim();
-                        if (t) return t;
-                    }
-                    return document.title || "Неизвестный вопрос";
-                }
-
-                let processedQs = new Set();
-
-                questionBlocks.forEach(block => {
-                    let qText = getClosestTitle(block);
-                    if (!qText || processedQs.has(qText) || qText === "Неизвестный вопрос") return;
-
-                    let hasAnswers = false;
-
-                    let textInps = Array.from(block.querySelectorAll('input[type="text"]:not([readonly]), textarea, input[type="number"]')).filter(isVisible);
-                    textInps.forEach(textInp => {
-                        let idStr = textInp.id || "";
-                        let nameStr = textInp.name || "";
-                        if (idStr.includes('_other') || nameStr.includes('_other')) return;
-
-                        let cell = textInp.closest('[data-rowidx], .grid__cell, tr, .question__list-item, .pr-row, div.ss-table-row');
-                        if (cell && cell.querySelector('input[type="radio"], input[type="checkbox"]')) return;
-
-                        if (textInp.value.trim() !== '') {
-                            results.push({type: 'text', q: qText, val: textInp.value.trim()});
-                            hasAnswers = true;
-                        }
-                    });
-
-                    let choices = Array.from(block.querySelectorAll('input[type="radio"], input[type="checkbox"]')).filter(c => {
-                        if (isVisible(c)) return true;
-                        let cId = c.id || "";
-                        if (cId) {
-                            let label = (c.labels && c.labels.length > 0) ? c.labels[0] : null;
-                            if (label && isVisible(label)) return true;
-                            let graph = document.getElementById(cId + '_graphical');
-                            if (graph && isVisible(graph)) return true;
-                        }
-                        return false;
-                    });
-
-                    let isMatrix = block.querySelector('.ss-table-header') !== null || block.closest('#ssDesktopTable') !== null || block.querySelector('thead') !== null;
-
-                    if (choices.length > 0 && !isMatrix) {
-                        let options = [];
-                        let selected_indices = [];
-                        let selected_texts = [];
-
-                        choices.forEach((c, idx) => {
-                            let container = c.closest('[data-rowidx], .grid__cell, .ss-choice-answers__container > div, tr, .question__list-item, .pr-row, div.ss-table-row') || c.parentElement.parentElement || c.parentElement;
-                            let baseOptText = "";
-
-                            if (container) {
-                                let label = (c.labels && c.labels.length > 0) ? c.labels[0] : null;
-                                if (label) {
-                                    baseOptText = getCleanText(label);
-                                }
-                                if (!baseOptText) {
-                                    baseOptText = getCleanText(container);
-                                }
-
-                                let textInp = container.querySelector('input[type="text"]');
-                                if (textInp) {
-                                    if (textInp.placeholder) {
-                                        baseOptText = "Свой вариант: " + textInp.placeholder;
-                                    } else {
-                                        baseOptText = "Свой вариант";
-                                    }
-                                }
-                            }
-
-                            baseOptText = baseOptText || `Вариант ответа ${idx + 1}`;
-                            options.push(baseOptText);
-
-                            if (c.checked) {
-                                selected_indices.push(idx);
-                                let textInp = container ? container.querySelector('input[type="text"]') : null;
-                                if (textInp && textInp.value.trim() !== '') {
-                                    selected_texts.push(baseOptText + " [" + textInp.value.trim() + "]");
-                                } else {
-                                    selected_texts.push(baseOptText);
-                                }
-                            }
-                        });
-
-                        if (selected_indices.length > 0) {
-                            results.push({
-                                type: 'choices',
-                                q: qText,
-                                opts: options,
-                                indices: selected_indices,
-                                texts: selected_texts
-                            });
-                            hasAnswers = true;
-                        }
-                    }
-
-                    let sel = block.querySelector('select');
-                    if (sel && (isVisible(sel) || sel.classList.contains('ss-search-select') || sel.classList.contains('select2-hidden-accessible')) && sel.selectedIndex > 0) {
-                        let options = Array.from(sel.querySelectorAll('option'))
-                            .filter(o => o.value && o.value !== '0' && !o.innerText.toLowerCase().includes('выбер'))
-                            .map(o => o.innerText.trim());
-
-                        let valText = sel.options[sel.selectedIndex].innerText.trim();
-                        let idx = options.indexOf(valText);
-                        if (idx !== -1) {
-                            results.push({type: 'select', q: qText, opts: options, indices: [idx], texts: [valText]});
-                            hasAnswers = true;
-                        }
-                    }
-
-                    if (hasAnswers) processedQs.add(qText);
-                });
-                return results;
-            }""")
+            data = await page.evaluate(JS_SYNC_MEMORY)
 
             if not data:
                 return
@@ -420,12 +246,11 @@ class BaseSurveyEngine:
         await human_sleep(0.3, 0.6)
         await target_input.fill("")
 
-        # Защита числовых полей
         input_type = await target_input.get_attribute("type")
         if input_type == "number":
             answer_text = re.sub(r'\D', '', answer_text)
             if not answer_text:
-                answer_text = str(self.profile_personal.get("age", 21))  # Страховка возраста
+                answer_text = str(self.profile_personal.get("age", 21))
 
         await page.keyboard.type(answer_text, delay=random.randint(50, 90))
         await human_sleep(0.6, 1.2)
@@ -433,8 +258,6 @@ class BaseSurveyEngine:
         await human_sleep(2.0, 3.5)
 
         return True
-
-        # В файле base.py замените метод extract_question_text на этот:
 
     async def extract_question_text(self, page: Page) -> str:
         q_selectors = [
@@ -458,7 +281,7 @@ class BaseSurveyEngine:
                 for el in elements:
                     if await el.is_visible():
                         t = (await el.inner_text()).strip()
-                        t_clean = ' '.join(t.replace('\n', ' ').split())  # нормализация пробелов
+                        t_clean = ' '.join(t.replace('\n', ' ').split())
 
                         if len(t_clean) > 5 and not t_clean.lower().startswith("страница"):
                             is_generic = any(phrase in t_clean.lower() for phrase in generic_phrases)

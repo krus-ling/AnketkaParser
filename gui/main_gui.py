@@ -4,9 +4,9 @@ import threading
 import asyncio
 import sys
 
-from brain import SurveyBrain
+from core.brain import SurveyBrain
 from engines.router import SurveyRouter
-from bot_state import state
+from core.bot_state import state
 
 
 class StdoutRedirector:

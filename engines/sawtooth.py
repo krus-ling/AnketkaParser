@@ -1,7 +1,7 @@
 import asyncio
 from playwright.async_api import Page
 from engines.base import BaseSurveyEngine, human_sleep
-from bot_state import state
+from core.bot_state import state
 
 
 class SawtoothEngine(BaseSurveyEngine):
