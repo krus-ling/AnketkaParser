@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Центр Опросов • AnketkaParser Hub</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --card-bg: #1a1d26;
+      --card-border: #282c39;
+      --card-hover: #232734;
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+      --text: #f3f4f6;
+      --text-muted: #9ca3af;
+      --success: #10b981;
+      --warning: #f59e0b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px 20px;
+    }
+    .header {
+      text-align: center;
+      max-width: 800px;
+      margin-bottom: 25px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: 9999px;
+      background: rgba(99, 102, 241, 0.15);
+      color: #818cf8;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      border: 1px solid rgba(99, 102, 241, 0.3);
+    }
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      line-height: 1.5;
+    }
+    .timer-banner {
+      width: 100%;
+      max-width: 860px;
+      background: linear-gradient(135deg, #1e1b4b 0%, #1e293b 100%);
+      border: 1px solid #4338ca;
+      border-radius: 16px;
+      padding: 18px 24px;
+      margin-bottom: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    }
+    .timer-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+    .timer-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .timer-icon {
+      font-size: 2rem;
+    }
+    .timer-text h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .timer-text p {
+      font-size: 0.9rem;
+      color: #cbd5e1;
+    }
+    .timer-controls {
+      display: flex;
+      gap: 10px;
+    }
+    .btn {
+      padding: 9px 18px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+    }
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+    .btn-secondary {
+      background: #334155;
+      color: white;
+    }
+    .btn-secondary:hover {
+      background: #475569;
+    }
+    .progress-bar-container {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 100%;
+      background: #818cf8;
+      transition: width 1s linear;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+      width: 100%;
+      max-width: 860px;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.25s ease;
+      position: relative;
+      cursor: pointer;
+    }
+    .card:hover {
+      background: var(--card-hover);
+      border-color: #4f46e5;
+      transform: translateY(-3px);
+      box-shadow: 0 12px 24px -10px rgba(99, 102, 241, 0.3);
+    }
+    .card.highlight {
+      border: 2px solid var(--accent);
+      box-shadow: 0 0 20px rgba(99, 102, 241, 0.45);
+      background: #1f2333;
+    }
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .card-icon {
+      font-size: 2.2rem;
+    }
+    .card-tag {
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: #2a2f42;
+      color: #94a3b8;
+      font-weight: 600;
+    }
+    .card h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .card p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+      margin-bottom: 18px;
+    }
+    .card-btn {
+      width: 100%;
+      justify-content: center;
+      background: #2a2e3d;
+      color: #e2e8f0;
+      border: 1px solid #3b4256;
+    }
+    .card-btn:hover {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+    .footer {
+      margin-top: 40px;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="badge">🤖 Агентный Мульти-Фарминг</div>
+    <h1>Центр Опросных Платформ</h1>
+    <p class="subtitle">Выберите платформу для прохождения или дождитесь автоматического перехода по циклу</p>
+  </div>
+
+  <div class="timer-banner" id="timerBanner">
+    <div class="timer-row">
+      <div class="timer-info">
+        <div class="timer-icon">⏳</div>
+        <div class="timer-text">
+          <h3 id="timerTitle">Автоматический переход через <span id="countdown">10</span> сек</h3>
+          <p id="timerDesc">Следующий сайт в ротации: <strong id="nextSiteName">Анкетка</strong></p>
+        </div>
+      </div>
+      <div class="timer-controls">
+        <button class="btn btn-secondary" id="btnPause" onclick="toggleTimer()">⏸ Пауза</button>
+        <button class="btn btn-primary" id="btnGo" onclick="goToSelected()">▶ Перейти сейчас</button>
+      </div>
+    </div>
+    <div class="progress-bar-container">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+  </div>
+
+  <div class="grid" id="sitesGrid">
+    <!-- Cards will be populated by JS -->
+  </div>
+
+  <div class="footer">
+    AnketkaParser Multi-Site Hub • Бот проверяет доступные опросы, решает их и возвращается в ротацию
+  </div>
+
+  <script>
+    const SITES = [
+      {
+        id: "anketka",
+        name: "Анкетка",
+        icon: "🟣",
+        tag: "Основной",
+        desc: "Самая популярная панель. Опросы от 10 до 100 руб, мгновенный баланс.",
+        url: "https://www.anketka.ru/profile"
+      },
+      {
+        id: "internetopros",
+        name: "ИнтернетОпрос",
+        icon: "🔵",
+        tag: "Survstat Hub",
+        desc: "Частые маркетинговые опросы, рутер Survstat и начисление баллов.",
+        url: "https://internetopros.ru/private"
+      },
+      {
+        id: "anketolog",
+        name: "Анкетолог",
+        icon: "🟢",
+        tag: "Vue.js",
+        desc: "Исследования брендов, товаров и сервисов с крупными анкетами.",
+        url: "https://panel.anketolog.ru/survey/invite/invitelist"
+      },
+      {
+        id: "expertnoemnenie",
+        name: "Экспертное Мнение",
+        icon: "🟠",
+        tag: "SurveyStudio",
+        desc: "Высокая стоимость одного опроса (до 150 руб), удобный личный кабинет.",
+        url: "https://panel.expertnoemnenie.ru/surveys"
+      },
+      {
+        id: "profiresearch",
+        name: "ProfiResearch",
+        icon: "🔴",
+        tag: "Аналитика",
+        desc: "Исследования потребительских рынков, автомобилей и финансов.",
+        url: "https://profiresearch.net/user/"
+      },
+      {
+        id: "moemnenie",
+        name: "МоёМнение",
+        icon: "🟣",
+        tag: "Призы",
+        desc: "Большой каталог опросов с накоплением бонусов и обменом на подарки.",
+        url: "https://www.moemnenie.ru/profile"
+      },
+      {
+        id: "youthink",
+        name: "YouThink",
+        icon: "🟡",
+        tag: "Быстрый вывод",
+        desc: "Современная платформа опросов с удобным выводом на карты и кошельки.",
+        url: "https://youthink.io/tasks"
+      }
+    ];
+
+    // Determine current index from URL param ?next=...
+    const urlParams = new URLSearchParams(window.location.search);
+    const nextParam = urlParams.get('next') || '';
+    let currentIndex = 0;
+    if (nextParam) {
+      const idx = SITES.findIndex(s => s.id === nextParam || s.url.includes(nextParam));
+      if (idx !== -1) currentIndex = idx;
+    }
+
+    let timeLeft = 10;
+    const totalTime = 10;
+    let isPaused = false;
+    let timerId = null;
+
+    const gridEl = document.getElementById('sitesGrid');
+    const countdownEl = document.getElementById('countdown');
+    const nextSiteNameEl = document.getElementById('nextSiteName');
+    const progressBarEl = document.getElementById('progressBar');
+    const btnPauseEl = document.getElementById('btnPause');
+
+    function renderCards() {
+      gridEl.innerHTML = '';
+      SITES.forEach((site, index) => {
+        const card = document.createElement('div');
+        card.className = `card ${index === currentIndex ? 'highlight' : ''}`;
+        card.onclick = () => selectAndNavigate(index);
+        card.innerHTML = `
+          <div>
+            <div class="card-header">
+              <span class="card-icon">${site.icon}</span>
+              <span class="card-tag">${site.tag}</span>
+            </div>
+            <h2>${site.name}</h2>
+            <p>${site.desc}</p>
+          </div>
+          <button class="btn card-btn" onclick="event.stopPropagation(); selectAndNavigate(${index});">
+            Перейти на ${site.name} →
+          </button>
+        `;
+        gridEl.appendChild(card);
+      });
+      nextSiteNameEl.innerText = SITES[currentIndex].name;
+    }
+
+    function selectAndNavigate(index) {
+      isPaused = true;
+      if (timerId) clearInterval(timerId);
+      const site = SITES[index];
+      window.__selectedSiteUrl = site.url;
+      window.location.href = site.url;
+    }
+
+    function goToSelected() {
+      selectAndNavigate(currentIndex);
+    }
+
+    function toggleTimer() {
+      isPaused = !isPaused;
+      btnPauseEl.innerText = isPaused ? "▶ Возобновить" : "⏸ Пауза";
+    }
+
+    function startCountdown() {
+      renderCards();
+      timerId = setInterval(() => {
+        if (!isPaused) {
+          timeLeft--;
+          if (timeLeft < 0) {
+            clearInterval(timerId);
+            goToSelected();
+            return;
+          }
+          countdownEl.innerText = timeLeft;
+          const pct = (timeLeft / totalTime) * 100;
+          progressBarEl.style.width = pct + "%";
+        }
+      }, 1000);
+    }
+
+    startCountdown();
+  </script>
+</body>
+</html>
