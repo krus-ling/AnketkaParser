@@ -2,7 +2,8 @@ import json
 import sqlite3
 import tkinter as tk
 from tkinter import messagebox, ttk
-from core.memory import DB_PATH, SurveyMemory
+from core.config import DB_PATH
+from core.memory import SurveyMemory
 
 # Цветовая палитра Dark Slate (Tailwind-style)
 BG_MAIN = "#0b0f19"
@@ -151,7 +152,7 @@ class SurveyReviewApp(tk.Tk):
         self.load_records()
 
     def _get_connection(self):
-        return sqlite3.connect(DB_PATH)
+        return sqlite3.connect(str(DB_PATH))
 
     def _get_font(self, size: int, weight: str = "normal"):
         return ("Segoe UI", int(size * self.scale), weight)
@@ -642,13 +643,19 @@ class SurveyReviewApp(tk.Tk):
     # === ИСПРАВЛЕНИЕ: Логика сброса других вариантов при одиночном выборе ===
     def _toggle_option_card(self, var, card, sym_lbl, text_lbl, is_multi):
         if not is_multi:
-            # Если одиночный выбор, сбрасываем все остальные варианты
-            for v, c, s, t in self.option_cards:
-                if v != var and v.get():
-                    v.set(False)
-                    c.config(bg=BG_CARD)
-                    t.config(bg=BG_CARD, fg=TEXT_MAIN)
-                    s.config(text="☐", bg=BG_CARD, fg=TEXT_MUTED)
+            # Если одиночный выбор, сбрасываем другие варианты
+            for c_frame, v_bool in self.option_cards:
+                if v_bool != var and v_bool.get():
+                    v_bool.set(False)
+                    c_frame.config(bg=BG_CARD)
+                    # Находим дочерние элементы (метку и текст) внутри фрейма для сброса стилей
+                    for child in c_frame.winfo_children():
+                        if isinstance(child, tk.Label):
+                            child.config(bg=BG_CARD)
+                            if child.cget("text") in ("☑", "☐"):
+                                child.config(text="☐", fg=TEXT_MUTED)
+                            else:
+                                child.config(fg=TEXT_MAIN)
 
         new_val = not var.get()
         var.set(new_val)

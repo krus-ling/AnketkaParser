@@ -61,7 +61,7 @@
       "condition_at_purchase": "Новый",
       "year_manufactured": 2022,
       "year_purchased": 2024,
-      "car_class": "Premium-класс, F-класс (высший, представительский-класс: Audi A8, Mercedes-Benz S-класса)",
+      "car_class": "Premium-класс, F-класс",
       "price_at_purchase_rub": "Более 7 000 000 рублей"
     },
     "purchase_plans": {
@@ -74,7 +74,7 @@
         "Новый"
       ],
       "target_price_rub": "4 500 001 - 5 000 000",
-      "target_class": "Малый Премиум (например, Audi A4, BMW X1)"
+      "target_class": "Малый Премиум"
     },
     "decisions_made_solely_or_equally": [
       "Техническое обслуживание автомобиля",
